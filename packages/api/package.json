@@ -1,0 +1,21 @@
+{
+  "name": "@gym/api",
+  "version": "0.1.0",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "lint": "eslint . --ext .ts --max-warnings 0",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@trpc/server": "^11.0.0",
+    "@gym/db": "workspace:*",
+    "@gym/shared-kernel": "workspace:*",
+    "zod": "^3.24.0",
+    "superjson": "^2.2.0"
+  },
+  "devDependencies": {
+    "typescript": "^5.7.0"
+  }
+}

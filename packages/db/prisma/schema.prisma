@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_DATABASE_URL")
+}
+
+// ─── Skeleton models (to be expanded in Phase 1) ───────────────────────────
+
+model User {
+  id        String   @id @default(cuid())
+  email     String   @unique
+  name      String?
+  role      UserRole @default(OWNER)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  gyms   Gym[]
+  member Member?
+
+  @@map("users")
+}
+
+model Gym {
+  id        String    @id @default(cuid())
+  name      String
+  ownerId   String    @map("owner_id")
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  owner   User     @relation(fields: [ownerId], references: [id])
+  members Member[]
+
+  @@map("gyms")
+}
+
+model Member {
+  id        String    @id @default(cuid())
+  userId    String    @unique @map("user_id")
+  gymId     String    @map("gym_id")
+  status    MemberStatus @default(ACTIVE)
+  createdAt DateTime  @default(now()) @map("created_at")
+  updatedAt DateTime  @updatedAt @map("updated_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  user User @relation(fields: [userId], references: [id])
+  gym  Gym  @relation(fields: [gymId], references: [id])
+
+  @@map("members")
+}
+
+model WebhookEvent {
+  id          String   @id
+  type        String
+  processedAt DateTime @default(now()) @map("processed_at")
+
+  @@map("webhook_events")
+}
+
+// ─── Enums ─────────────────────────────────────────────────────────────────
+
+enum UserRole {
+  OWNER
+  STAFF
+  MEMBER
+}
+
+enum MemberStatus {
+  ACTIVE
+  INACTIVE
+  SUSPENDED
+  CANCELLED
+}

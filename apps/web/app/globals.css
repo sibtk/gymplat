@@ -1,0 +1,146 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Peec AI exact color system */
+    --background: 0 0% 96.9%;       /* #f7f7f7 - rgb(247,247,247) */
+    --foreground: 0 0% 9%;          /* #171717 - rgb(23,23,23) */
+    --card: 0 0% 100%;              /* #ffffff */
+    --card-foreground: 0 0% 9%;     /* #171717 */
+    --popover: 0 0% 100%;
+    --popover-foreground: 0 0% 9%;
+    --primary: 0 0% 9%;             /* #171717 */
+    --primary-foreground: 0 0% 96.9%;
+    --secondary: 0 0% 96.1%;        /* #f5f5f5 */
+    --secondary-foreground: 0 0% 9%;
+    --muted: 0 0% 96.1%;            /* #f5f5f5 */
+    --muted-foreground: 0 0% 45.1%; /* #737373 */
+    --accent: 0 0% 96.1%;
+    --accent-foreground: 0 0% 9%;
+    --destructive: 349 100% 42%;    /* #d80027 - rgb(216,0,39) */
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 89.8%;           /* #e5e5e5 */
+    --input: 0 0% 89.8%;            /* #e5e5e5 */
+    --ring: 0 0% 9%;
+    --radius: 0.5rem;
+  }
+
+  .dark {
+    --background: 0 0% 9%;          /* #171717 */
+    --foreground: 24 9% 90%;        /* #e8e4e2 - rgb(232,228,226) */
+    --card: 0 0% 7%;                /* #121212 */
+    --card-foreground: 24 9% 90%;
+    --popover: 0 0% 7%;
+    --popover-foreground: 24 9% 90%;
+    --primary: 24 9% 90%;
+    --primary-foreground: 0 0% 9%;
+    --secondary: 0 0% 15%;
+    --secondary-foreground: 24 9% 90%;
+    --muted: 0 0% 15%;
+    --muted-foreground: 0 0% 63.9%;
+    --accent: 0 0% 15%;
+    --accent-foreground: 24 9% 90%;
+    --destructive: 349 100% 42%;
+    --destructive-foreground: 0 0% 98%;
+    --border: 0 0% 32%;             /* #525252 */
+    --input: 0 0% 32%;
+    --ring: 24 9% 90%;
+    --radius: 0.5rem;
+  }
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  html {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    background-color: hsl(var(--background));
+    color: hsl(var(--foreground));
+    font-feature-settings: "rlig" 1, "calt" 1;
+  }
+}
+
+/* Section dark utility — applies dark background inline */
+.section-dark {
+  background-color: #171717;
+  color: #e8e4e2;
+}
+
+.section-dark * {
+  border-color: #525252;
+}
+
+/* Gradient divider utility */
+.gradient-divider {
+  height: 1px;
+  background: linear-gradient(
+    to right,
+    transparent,
+    rgba(82, 82, 82, 0.5),
+    transparent
+  );
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Focus visible styles */
+*:focus-visible {
+  outline: 2px solid hsl(var(--ring));
+  outline-offset: 2px;
+}
+
+/* Ticker animation for capabilities section */
+@keyframes ticker-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-ticker {
+  animation: ticker-scroll 30s linear infinite;
+}
+
+.animate-ticker-reverse {
+  animation: ticker-scroll 35s linear infinite reverse;
+}
+
+/* Dot texture pattern for hero/dashboard section */
+.dot-texture {
+  background-image: radial-gradient(circle, #d4d4d4 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+
+/* Dashboard gradient glow */
+.dashboard-glow {
+  background: radial-gradient(
+    ellipse at center,
+    rgba(168, 162, 158, 0.25) 0%,
+    rgba(168, 162, 158, 0.08) 40%,
+    transparent 70%
+  );
+}
+
+/* Cursor blink animation */
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s step-end infinite;
+}
