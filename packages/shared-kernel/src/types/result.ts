@@ -20,5 +20,5 @@ export function unwrap<T, E>(result: Result<T, E>): T {
   if (result.ok) {
     return result.data;
   }
-  throw result.error;
+  throw result.error instanceof Error ? result.error : new Error(String(result.error));
 }

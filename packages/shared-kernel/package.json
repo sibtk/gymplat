@@ -13,6 +13,8 @@
     "zod": "^3.24.0"
   },
   "devDependencies": {
+    "@gym/eslint-config": "workspace:*",
+    "eslint": "^8.57.0",
     "typescript": "^5.7.0"
   }
 }

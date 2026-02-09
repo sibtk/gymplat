@@ -25,14 +25,14 @@ export function formatMoney(money: Money): string {
 
 export function addMoney(a: Money, b: Money): Money {
   if (a.currency !== b.currency) {
-    throw new Error(`Cannot add different currencies: ${a.currency} and ${b.currency}`);
+    throw new Error(`Cannot add different currencies: ${String(a.currency)} and ${String(b.currency)}`);
   }
   return createMoney(a.amountCents + b.amountCents, a.currency);
 }
 
 export function subtractMoney(a: Money, b: Money): Money {
   if (a.currency !== b.currency) {
-    throw new Error(`Cannot subtract different currencies: ${a.currency} and ${b.currency}`);
+    throw new Error(`Cannot subtract different currencies: ${String(a.currency)} and ${String(b.currency)}`);
   }
   return createMoney(a.amountCents - b.amountCents, a.currency);
 }

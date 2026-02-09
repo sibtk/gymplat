@@ -139,6 +139,12 @@ importers:
         specifier: ^3.24.0
         version: 3.25.76
     devDependencies:
+      '@gym/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
       typescript:
         specifier: ^5.7.0
         version: 5.9.3
@@ -149,9 +155,15 @@ importers:
         specifier: ^6.0.0
         version: 6.19.2(prisma@6.19.2(typescript@5.9.3))(typescript@5.9.3)
     devDependencies:
+      '@gym/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       '@types/node':
         specifier: ^22.0.0
         version: 22.19.10
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
       prisma:
         specifier: ^6.0.0
         version: 6.19.2(typescript@5.9.3)
@@ -186,6 +198,12 @@ importers:
         specifier: ^3.24.0
         version: 3.25.76
     devDependencies:
+      '@gym/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
       typescript:
         specifier: ^5.7.0
         version: 5.9.3
@@ -211,9 +229,15 @@ importers:
         specifier: ^2.6.0
         version: 2.6.1
     devDependencies:
+      '@gym/eslint-config':
+        specifier: workspace:*
+        version: link:../eslint-config
       '@types/react':
         specifier: ^18.3.0
         version: 18.3.28
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.1
       typescript:
         specifier: ^5.7.0
         version: 5.9.3
