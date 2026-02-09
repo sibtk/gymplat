@@ -5,7 +5,6 @@ const config: Config = {
   content: [
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
     "../../packages/ui/src/**/*.{ts,tsx}",
   ],
   theme: {
@@ -44,35 +43,30 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        // Peec AI design tokens
-        "peec-red": "#d80027",          // rgb(216,0,39) — accent red
-        "peec-dark": "#171717",         // rgb(23,23,23) — primary dark / black
-        "peec-light": "#f7f7f7",        // rgb(247,247,247) — page background
-        "peec-warm": "#e8e4e2",         // rgb(232,228,226) — dark section text
-        "peec-border-light": "#e5e5e5", // rgb(229,229,229) — light borders
-        "peec-border-dark": "#525252",  // rgb(82,82,82) — dark borders
-        "peec-text-secondary": "#525252", // rgb(82,82,82)
-        "peec-text-tertiary": "#737373",  // rgb(115,115,115)
-        "peec-text-muted": "#a3a3a3",     // rgb(163,163,163)
+        // Design tokens
+        "peec-red": "#d80027",
+        "peec-dark": "#171717",
+        "peec-light": "#f7f7f7",
+        "peec-border-light": "#e5e5e5",
+        "peec-text-secondary": "#525252",
+        "peec-text-tertiary": "#737373",
+        "peec-text-muted": "#a3a3a3",
         stone: {
-          50: "#fafaf9",   // rgb(250,250,249) — Peec stone palette
-          100: "#f5f5f5",  // rgb(245,245,245)
-          200: "#e5e5e5",  // rgb(229,229,229)
+          50: "#fafaf9",
+          100: "#f5f5f5",
+          200: "#e5e5e5",
           300: "#d4d4d4",
           400: "#a3a3a3",
-          500: "#737373",  // rgb(115,115,115)
-          600: "#525252",  // rgb(82,82,82)
-          700: "#404040",  // rgb(64,64,64)
-          800: "#262626",  // rgb(38,38,38)
-          850: "#1c1917",  // rgb(28,25,23) — stone dark
-          900: "#171717",  // rgb(23,23,23) — primary dark
-          950: "#0c0a09",  // rgb(12,10,9) — deepest dark
+          500: "#737373",
+          600: "#525252",
+          700: "#404040",
+          800: "#262626",
+          900: "#171717",
         },
       },
       fontFamily: {
         sans: ["var(--font-geist-sans)", "system-ui", "sans-serif"],
-        mono: ["var(--font-fragment-mono)", "var(--font-geist-mono)", "monospace"],
-        inter: ["var(--font-inter)", "system-ui", "sans-serif"],
+        mono: ["var(--font-geist-mono)", "monospace"],
       },
       fontSize: {
         "2xs": ["9px", { lineHeight: "1.2em" }],
@@ -90,8 +84,6 @@ const config: Config = {
       },
       spacing: {
         section: "80px",
-        "grid-gap": "40px",
-        component: "16px",
       },
       maxWidth: {
         peec: "1148px",
@@ -100,33 +92,14 @@ const config: Config = {
         lg: "var(--radius)",
         md: "calc(var(--radius) - 2px)",
         sm: "calc(var(--radius) - 4px)",
-        pill: "1000px",
       },
       boxShadow: {
         card: "0 4px 4px rgba(23,23,23,0.04)",
         "card-hover": "0 8px 16px rgba(23,23,23,0.08)",
       },
-      backgroundImage: {
-        "gradient-divider":
-          "linear-gradient(to right, transparent, rgba(82, 82, 82, 0.5), transparent)",
-      },
       screens: {
         tablet: "810px",
         desktop: "1200px",
-      },
-      keyframes: {
-        "fade-in": {
-          "0%": { opacity: "0", transform: "translateY(10px)" },
-          "100%": { opacity: "1", transform: "translateY(0)" },
-        },
-        "slide-in-left": {
-          "0%": { opacity: "0", transform: "translateX(-20px)" },
-          "100%": { opacity: "1", transform: "translateX(0)" },
-        },
-      },
-      animation: {
-        "fade-in": "fade-in 0.5s ease-out forwards",
-        "slide-in-left": "slide-in-left 0.5s ease-out forwards",
       },
     },
   },

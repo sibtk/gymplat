@@ -20,8 +20,6 @@ const buttonVariants = cva(
         cta: "bg-[#171717] text-white shadow hover:bg-[#2b2b2b] rounded-xl",
         outlinePill:
           "border border-[#e5e5e5] bg-white text-[#171717] rounded-xl hover:bg-[#f5f5f5] shadow-sm",
-        darkPill:
-          "bg-[#171717] text-white rounded-xl hover:bg-[#2b2b2b]",
       },
       size: {
         default: "h-9 px-4 py-2",

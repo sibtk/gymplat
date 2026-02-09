@@ -69,27 +69,6 @@
   }
 }
 
-/* Section dark utility — applies dark background inline */
-.section-dark {
-  background-color: #171717;
-  color: #e8e4e2;
-}
-
-.section-dark * {
-  border-color: #525252;
-}
-
-/* Gradient divider utility */
-.gradient-divider {
-  height: 1px;
-  background: linear-gradient(
-    to right,
-    transparent,
-    rgba(82, 82, 82, 0.5),
-    transparent
-  );
-}
-
 /* Smooth scrolling */
 html {
   scroll-behavior: smooth;
@@ -99,24 +78,6 @@ html {
 *:focus-visible {
   outline: 2px solid hsl(var(--ring));
   outline-offset: 2px;
-}
-
-/* Ticker animation for capabilities section */
-@keyframes ticker-scroll {
-  0% {
-    transform: translateX(0);
-  }
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-ticker {
-  animation: ticker-scroll 30s linear infinite;
-}
-
-.animate-ticker-reverse {
-  animation: ticker-scroll 35s linear infinite reverse;
 }
 
 /* Dot texture pattern for hero/dashboard section */
