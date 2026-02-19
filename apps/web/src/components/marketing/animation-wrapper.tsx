@@ -57,6 +57,32 @@ export function FadeIn({
   );
 }
 
+export function BlurFadeIn({
+  children,
+  className,
+  delay = 0,
+  direction = "up",
+}: {
+  children: ReactNode;
+  className?: string;
+  delay?: number;
+  direction?: "up" | "down" | "none";
+}) {
+  const yOffset = direction === "up" ? 24 : direction === "down" ? -24 : 0;
+
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: yOffset, filter: "blur(8px)" }}
+      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      viewport={{ once: true, margin: "-60px" }}
+      transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
 export function StaggerContainer({
   children,
   className,

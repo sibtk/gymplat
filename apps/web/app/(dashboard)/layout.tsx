@@ -1,32 +1,52 @@
+"use client";
+
+import { AnimatePresence, motion } from "framer-motion";
+import { useCallback, useState } from "react";
+
+import { Header } from "@/components/dashboard/header";
+import { Sidebar } from "@/components/dashboard/sidebar";
+
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = useCallback(() => setSidebarOpen((prev) => !prev), []);
+  const closeSidebar = useCallback(() => setSidebarOpen(false), []);
+
   return (
-    <div className="flex min-h-screen">
-      {/* Sidebar */}
-      <aside className="hidden w-64 border-r border-border bg-card tablet:block">
-        <div className="flex h-16 items-center border-b border-border px-6">
-          <span className="text-lg font-bold text-foreground">GymPlatform</span>
-        </div>
-        <nav className="space-y-1 p-4">
-          {["Dashboard", "Members", "Plans", "Payments", "Access", "Settings"].map((item) => (
-            <div
-              key={item}
-              className="cursor-pointer rounded-md px-3 py-2 text-sm text-muted-foreground transition-colors hover:bg-accent hover:text-accent-foreground"
-            >
-              {item}
-            </div>
-          ))}
-        </nav>
+    <div className="flex min-h-screen bg-stone-50">
+      {/* Desktop sidebar */}
+      <aside className="hidden w-60 shrink-0 border-r border-peec-border-light tablet:block">
+        <Sidebar />
       </aside>
+
+      {/* Mobile sidebar overlay */}
+      <AnimatePresence>
+        {sidebarOpen && (
+          <>
+            <motion.div
+              className="fixed inset-0 z-40 bg-black/30"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              onClick={closeSidebar}
+            />
+            <motion.aside
+              className="fixed inset-y-0 left-0 z-50 w-60"
+              initial={{ x: "-100%" }}
+              animate={{ x: 0 }}
+              exit={{ x: "-100%" }}
+              transition={{ type: "spring", damping: 25, stiffness: 300 }}
+            >
+              <Sidebar mobile onClose={closeSidebar} />
+            </motion.aside>
+          </>
+        )}
+      </AnimatePresence>
 
       {/* Main content */}
       <div className="flex flex-1 flex-col">
-        {/* Header */}
-        <header className="flex h-16 items-center border-b border-border px-6">
-          <h2 className="text-sm font-medium text-muted-foreground">Dashboard</h2>
-        </header>
-
-        {/* Page content */}
-        <main className="flex-1 p-6">{children}</main>
+        <Header onMenuToggle={toggleSidebar} />
+        <main className="flex-1 overflow-auto p-4 tablet:p-6">{children}</main>
       </div>
     </div>
   );

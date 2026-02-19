@@ -9,7 +9,7 @@ import {
   TrendingDown,
   TrendingUp,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { AnimationWrapper } from "./animation-wrapper";
 
@@ -125,14 +125,34 @@ export function DashboardPreview() {
   const [typedText, setTypedText] = useState("");
   const [promptIndex, setPromptIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isChartHovered, setIsChartHovered] = useState(false);
+  const chartRef = useRef<HTMLDivElement>(null);
 
-  // Sliding chart tooltip — auto-advance every 3s
+  // Mouse-driven tooltip: map cursor X to nearest month index
+  const handleChartMouseMove = useCallback(
+    (e: React.MouseEvent<HTMLDivElement>) => {
+      const rect = chartRef.current?.getBoundingClientRect();
+      if (!rect) return;
+
+      // Chart content area as a fraction of the container (matching SVG viewBox padding)
+      const padFrac = CHART_PAD / CHART_W;
+      const relX = (e.clientX - rect.left) / rect.width;
+      const clamped = Math.max(padFrac, Math.min(1 - padFrac, relX));
+      const normalized = (clamped - padFrac) / (1 - 2 * padFrac);
+      const index = Math.round(normalized * (months.length - 1));
+      setActiveMonth(index);
+    },
+    [],
+  );
+
+  // Fallback auto-advance when not hovering
   useEffect(() => {
+    if (isChartHovered) return;
     const interval = setInterval(() => {
       setActiveMonth((prev) => (prev + 1) % months.length);
     }, 3000);
     return () => clearInterval(interval);
-  }, []);
+  }, [isChartHovered]);
 
   // Typing animation
   useEffect(() => {
@@ -184,7 +204,10 @@ export function DashboardPreview() {
       <div className="relative mx-auto max-w-6xl px-6">
         <AnimationWrapper delay={0.2}>
           {/* ===== DASHBOARD CARD ===== */}
-          <div className="overflow-hidden rounded-2xl border border-peec-border-light bg-white shadow-card-hover">
+          <div className="dashboard-card relative overflow-hidden rounded-2xl border border-peec-border-light bg-white shadow-card-hover">
+            {/* Shine line across top */}
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-stone-200/60 to-transparent" />
             <div className="flex">
               {/* ----- Sidebar ----- */}
               <div className="hidden w-[200px] shrink-0 border-r border-peec-border-light bg-stone-50 p-4 tablet:block">
@@ -306,7 +329,13 @@ export function DashboardPreview() {
                         </div>
 
                         {/* SVG Chart */}
-                        <div className="relative">
+                        <div
+                          ref={chartRef}
+                          className="relative cursor-crosshair"
+                          onMouseEnter={() => setIsChartHovered(true)}
+                          onMouseMove={handleChartMouseMove}
+                          onMouseLeave={() => setIsChartHovered(false)}
+                        >
                           <svg
                             viewBox={`0 0 ${CHART_W} ${CHART_H}`}
                             className="h-40 w-full"
@@ -344,7 +373,7 @@ export function DashboardPreview() {
                                 x1: toPoint(0, activeMonth, months.length).x,
                                 x2: toPoint(0, activeMonth, months.length).x,
                               }}
-                              transition={{ duration: 0.6, ease: "easeInOut" }}
+                              transition={{ duration: isChartHovered ? 0.15 : 0.6, ease: "easeInOut" }}
                             />
 
                             {/* Smooth chart lines */}
@@ -377,7 +406,7 @@ export function DashboardPreview() {
                                   strokeWidth="2"
                                   animate={{ cx: pt.x, cy: pt.y }}
                                   transition={{
-                                    duration: 0.6,
+                                    duration: isChartHovered ? 0.15 : 0.6,
                                     ease: "easeInOut",
                                   }}
                                 />
@@ -390,7 +419,7 @@ export function DashboardPreview() {
                             className="pointer-events-none absolute top-0 z-10 rounded-xl border border-peec-border-light bg-white px-4 py-3 shadow-card-hover"
                             animate={{ left: `${tooltipXPercent}%` }}
                             style={{ transform: tooltipTransform }}
-                            transition={{ duration: 0.6, ease: "easeInOut" }}
+                            transition={{ duration: isChartHovered ? 0.15 : 0.6, ease: "easeInOut" }}
                           >
                             <p className="mb-2 text-xs font-semibold text-peec-dark">
                               {months[activeMonth]} 2025

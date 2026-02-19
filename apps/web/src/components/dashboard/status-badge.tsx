@@ -1,0 +1,38 @@
+interface StatusBadgeProps {
+  status: "active" | "at-risk" | "churned" | "critical";
+}
+
+const styles: Record<StatusBadgeProps["status"], string> = {
+  active: "bg-green-50 text-green-700",
+  "at-risk": "bg-amber-50 text-amber-700",
+  critical: "bg-red-50 text-red-700",
+  churned: "bg-stone-100 text-stone-600",
+};
+
+const labels: Record<StatusBadgeProps["status"], string> = {
+  active: "Active",
+  "at-risk": "At Risk",
+  critical: "Critical",
+  churned: "Churned",
+};
+
+export function StatusBadge({ status }: StatusBadgeProps) {
+  return (
+    <span
+      className={`inline-flex items-center rounded-full px-2 py-0.5 text-2xs font-medium ${styles[status]}`}
+    >
+      <span
+        className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
+          status === "active"
+            ? "bg-green-500"
+            : status === "at-risk"
+              ? "bg-amber-500"
+              : status === "critical"
+                ? "bg-red-500"
+                : "bg-stone-400"
+        }`}
+      />
+      {labels[status]}
+    </span>
+  );
+}
