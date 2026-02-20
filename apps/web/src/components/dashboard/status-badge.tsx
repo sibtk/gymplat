@@ -3,7 +3,7 @@
 import { PulseDot } from "@/components/dashboard/motion";
 
 interface StatusBadgeProps {
-  status: "active" | "at-risk" | "churned" | "critical";
+  status: "active" | "at-risk" | "churned" | "critical" | "paused";
 }
 
 const styles: Record<StatusBadgeProps["status"], string> = {
@@ -11,6 +11,7 @@ const styles: Record<StatusBadgeProps["status"], string> = {
   "at-risk": "bg-amber-50 text-amber-700",
   critical: "bg-red-50 text-red-700",
   churned: "bg-stone-100 text-stone-600",
+  paused: "bg-blue-50 text-blue-700",
 };
 
 const labels: Record<StatusBadgeProps["status"], string> = {
@@ -18,6 +19,7 @@ const labels: Record<StatusBadgeProps["status"], string> = {
   "at-risk": "At Risk",
   critical: "Critical",
   churned: "Churned",
+  paused: "Paused",
 };
 
 export function StatusBadge({ status }: StatusBadgeProps) {
@@ -36,7 +38,9 @@ export function StatusBadge({ status }: StatusBadgeProps) {
               ? "bg-amber-500"
               : status === "critical"
                 ? "bg-red-500"
-                : "bg-stone-400"
+                : status === "paused"
+                  ? "bg-blue-500"
+                  : "bg-stone-400"
           }`}
         />
       )}

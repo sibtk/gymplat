@@ -111,3 +111,59 @@ html {
   background-size: 200% 100%;
   animation: shimmer 1.5s ease-in-out infinite;
 }
+
+/* Health Score Orb glow — pulsing box-shadow matching score color */
+@keyframes orb-glow-green {
+  0%, 100% { box-shadow: 0 0 20px 4px rgba(34, 197, 94, 0.15); }
+  50% { box-shadow: 0 0 30px 8px rgba(34, 197, 94, 0.25); }
+}
+@keyframes orb-glow-amber {
+  0%, 100% { box-shadow: 0 0 20px 4px rgba(245, 158, 11, 0.15); }
+  50% { box-shadow: 0 0 30px 8px rgba(245, 158, 11, 0.25); }
+}
+@keyframes orb-glow-red {
+  0%, 100% { box-shadow: 0 0 20px 4px rgba(239, 68, 68, 0.15); }
+  50% { box-shadow: 0 0 30px 8px rgba(239, 68, 68, 0.25); }
+}
+
+.animate-orb-glow-green {
+  animation: orb-glow-green 3s ease-in-out infinite;
+}
+.animate-orb-glow-amber {
+  animation: orb-glow-amber 3s ease-in-out infinite;
+}
+.animate-orb-glow-red {
+  animation: orb-glow-red 3s ease-in-out infinite;
+}
+
+/* Score flash — brief amber highlight when a risk score changes */
+@keyframes score-flash {
+  0% { background-color: transparent; }
+  15% { background-color: rgba(245, 158, 11, 0.15); }
+  100% { background-color: transparent; }
+}
+
+.animate-score-flash {
+  animation: score-flash 1.5s ease-out;
+}
+
+/* Ticker roll — number rolling in from below */
+@keyframes ticker-roll {
+  0% { transform: translateY(100%); opacity: 0; }
+  30% { opacity: 1; }
+  100% { transform: translateY(0); opacity: 1; }
+}
+
+.animate-ticker-roll {
+  animation: ticker-roll 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Copilot insight slide-in from right */
+@keyframes insight-slide {
+  0% { transform: translateX(20px); opacity: 0; }
+  100% { transform: translateX(0); opacity: 1; }
+}
+
+.animate-insight-slide {
+  animation: insight-slide 0.4s ease-out;
+}

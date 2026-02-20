@@ -1,21 +1,18 @@
 "use client";
 
-import { ArrowUp, MessageSquareText } from "lucide-react";
-import { useEffect, useRef, useState } from "react";
+import { AlertTriangle, ArrowUp, MessageSquareText, Trash2 } from "lucide-react";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 import { aiCannedResponses, aiConversationStarters } from "@/lib/mock-data";
+import { buildCopilotContext } from "@/lib/retention/copilot-context";
+import { useGymStore } from "@/lib/store";
+import { generateId } from "@/lib/utils";
 
-// ─── Types ───────────────────────────────────────────────────────
+import type { ChatMessage } from "@/lib/types";
 
-interface ChatMessage {
-  id: string;
-  role: "user" | "assistant";
-  content: string;
-}
+// ─── Helpers ────────────────────────────────────────────────────
 
-// ─── Helpers ─────────────────────────────────────────────────────
-
-function matchResponse(input: string): string {
+function matchCannedResponse(input: string): string {
   const lower = input.toLowerCase();
   if (lower.includes("churn") || lower.includes("risk") || lower.includes("at-risk") || lower.includes("likely"))
     return aiCannedResponses["churn"] ?? "";
@@ -29,77 +26,172 @@ function matchResponse(input: string): string {
     return aiCannedResponses["campaign"] ?? "";
   if (lower.includes("hello") || lower.includes("hi") || lower.includes("hey"))
     return aiCannedResponses["hello"] ?? "";
-  if (lower.includes("help") || lower.includes("what can"))
-    return aiCannedResponses["help"] ?? "";
   return aiCannedResponses["help"] ?? "";
 }
 
-// ─── Component ───────────────────────────────────────────────────
+function buildRetentionContext(): string {
+  const store = useGymStore.getState();
+  return buildCopilotContext({
+    page: store.copilotContext.page,
+    memberId: store.copilotContext.memberId,
+    members: store.members,
+    riskAssessments: store.riskAssessments,
+    interventions: store.interventions,
+    gymHealthScore: store.gymHealthScore,
+    plans: store.plans,
+    transactions: store.transactions,
+  });
+}
+
+// ─── Component ──────────────────────────────────────────────────
 
 export function AiChat() {
-  const [messages, setMessages] = useState<ChatMessage[]>([]);
+  const chatMessages = useGymStore((s) => s.chatMessages);
+  const addChatMessage = useGymStore((s) => s.addChatMessage);
+  const clearChatMessages = useGymStore((s) => s.clearChatMessages);
+
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [streamedContent, setStreamedContent] = useState("");
+  const [thinking, setThinking] = useState(false);
+  const [fallbackMode, setFallbackMode] = useState(false);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const idCounter = useRef(0);
+  const abortRef = useRef<AbortController | null>(null);
 
-  // Auto-scroll to bottom
   useEffect(() => {
     if (scrollRef.current) {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
-  }, [messages, streamedContent]);
+  }, [chatMessages, streamedContent]);
 
-  const [thinking, setThinking] = useState(false);
+  const streamFromApi = useCallback(async (userText: string, allMessages: ChatMessage[]) => {
+    const retentionContext = buildRetentionContext();
+    const controller = new AbortController();
+    abortRef.current = controller;
 
-  const sendMessage = (text: string) => {
-    if (!text.trim() || streaming) return;
+    try {
+      const response = await fetch("/api/chat", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          messages: allMessages.map((m) => ({ role: m.role, content: m.content })),
+          retentionContext,
+        }),
+        signal: controller.signal,
+      });
 
-    idCounter.current += 1;
-    const userMsg: ChatMessage = {
-      id: `msg-${idCounter.current}`,
-      role: "user",
-      content: text.trim(),
-    };
+      if (response.status === 503) {
+        // API key not configured — use fallback
+        setFallbackMode(true);
+        return matchCannedResponse(userText);
+      }
 
-    setMessages((prev) => [...prev, userMsg]);
-    setInput("");
-    setStreaming(true);
-    setThinking(true);
-    setStreamedContent("");
+      if (!response.ok) {
+        setFallbackMode(true);
+        return matchCannedResponse(userText);
+      }
 
-    const fullResponse = matchResponse(text);
+      // Read SSE stream
+      const reader = response.body?.getReader();
+      if (!reader) return matchCannedResponse(userText);
 
-    // Show thinking indicator, then stream
-    setTimeout(() => {
-      setThinking(false);
+      const decoder = new TextDecoder();
+      let fullContent = "";
+      let buffer = "";
+
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+
+        buffer += decoder.decode(value, { stream: true });
+        const lines = buffer.split("\n");
+        buffer = lines.pop() ?? "";
+
+        for (const line of lines) {
+          if (line.startsWith("data: ")) {
+            const data = line.slice(6);
+            if (data === "[DONE]") continue;
+            try {
+              const parsed = JSON.parse(data) as { text: string };
+              fullContent += parsed.text;
+              setStreamedContent(fullContent);
+            } catch {
+              // Skip
+            }
+          }
+        }
+      }
+
+      return fullContent;
+    } catch {
+      setFallbackMode(true);
+      return matchCannedResponse(userText);
+    }
+  }, []);
+
+  const streamCannedResponse = useCallback((text: string): Promise<string> => {
+    const fullResponse = matchCannedResponse(text);
+    return new Promise((resolve) => {
       let charIdx = 0;
-
       const interval = setInterval(() => {
         charIdx += 1;
         if (charIdx <= fullResponse.length) {
           setStreamedContent(fullResponse.slice(0, charIdx));
         } else {
           clearInterval(interval);
-          idCounter.current += 1;
-          const aiMsg: ChatMessage = {
-            id: `msg-${idCounter.current}`,
-            role: "assistant",
-            content: fullResponse,
-          };
-          setMessages((prev) => [...prev, aiMsg]);
-          setStreamedContent("");
-          setStreaming(false);
+          resolve(fullResponse);
         }
-      }, 25);
-    }, 600);
-  };
+      }, 15);
+    });
+  }, []);
+
+  const sendMessage = useCallback(async (text: string) => {
+    if (!text.trim() || streaming) return;
+
+    const userMsg: ChatMessage = {
+      id: generateId("msg"),
+      role: "user",
+      content: text.trim(),
+      timestamp: new Date().toISOString(),
+    };
+
+    addChatMessage(userMsg);
+    setInput("");
+    setStreaming(true);
+    setThinking(true);
+    setStreamedContent("");
+
+    const allMessages = [...chatMessages, userMsg];
+
+    // Small delay for thinking indicator
+    await new Promise((r) => setTimeout(r, 400));
+    setThinking(false);
+
+    let fullContent: string;
+    if (fallbackMode) {
+      fullContent = await streamCannedResponse(text);
+    } else {
+      fullContent = await streamFromApi(text, allMessages);
+    }
+
+    if (fullContent) {
+      addChatMessage({
+        id: generateId("msg"),
+        role: "assistant",
+        content: fullContent,
+        timestamp: new Date().toISOString(),
+      });
+    }
+
+    setStreamedContent("");
+    setStreaming(false);
+  }, [streaming, chatMessages, addChatMessage, fallbackMode, streamFromApi, streamCannedResponse]);
 
   const handleKeyDown = (e: React.KeyboardEvent) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
-      sendMessage(input);
+      void sendMessage(input);
     }
   };
 
@@ -108,7 +200,7 @@ export function AiChat() {
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-peec-border-light px-5 py-3">
         <MessageSquareText className="h-4 w-4 text-peec-text-muted" />
-        <span className="text-xs font-medium text-peec-text-muted">AI Assistant</span>
+        <span className="text-xs font-medium text-peec-text-muted">AI Copilot</span>
         <span className="ml-auto flex items-center gap-1.5">
           <span className="relative flex h-2 w-2">
             <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-green-400 opacity-75" />
@@ -116,21 +208,39 @@ export function AiChat() {
           </span>
           <span className="text-2xs text-green-600">Online</span>
         </span>
+        {chatMessages.length > 0 && (
+          <button
+            type="button"
+            onClick={() => clearChatMessages()}
+            className="ml-2 rounded p-1 text-peec-text-muted hover:bg-stone-100 hover:text-peec-dark"
+            title="Clear conversation"
+          >
+            <Trash2 className="h-3.5 w-3.5" />
+          </button>
+        )}
       </div>
+
+      {/* Fallback banner */}
+      {fallbackMode && (
+        <div className="flex items-center gap-2 border-b border-amber-200 bg-amber-50 px-5 py-2">
+          <AlertTriangle className="h-3.5 w-3.5 text-amber-600" />
+          <span className="text-2xs text-amber-700">
+            Configure ANTHROPIC_API_KEY for real AI responses
+          </span>
+        </div>
+      )}
 
       {/* Messages */}
       <div ref={scrollRef} className="h-[420px] overflow-y-auto p-5">
-        {messages.length === 0 && !streaming && (
+        {chatMessages.length === 0 && !streaming && (
           <div className="flex h-full flex-col items-center justify-center">
-            <p className="mb-4 text-sm text-peec-text-muted">
-              Ask me anything about your gym
-            </p>
+            <p className="mb-4 text-sm text-peec-text-muted">Ask me anything about your gym</p>
             <div className="flex flex-wrap justify-center gap-2">
               {aiConversationStarters.map((starter) => (
                 <button
                   key={starter}
                   type="button"
-                  onClick={() => sendMessage(starter)}
+                  onClick={() => void sendMessage(starter)}
                   className="rounded-full border border-peec-border-light px-3 py-1.5 text-xs text-peec-text-secondary transition-colors hover:bg-stone-50 hover:text-peec-dark"
                 >
                   {starter}
@@ -141,24 +251,16 @@ export function AiChat() {
         )}
 
         <div className="space-y-4">
-          {messages.map((msg) => (
-            <div
-              key={msg.id}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-            >
-              <div
-                className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
-                  msg.role === "user"
-                    ? "bg-peec-dark text-white"
-                    : "bg-stone-50 text-peec-dark"
-                }`}
-              >
+          {chatMessages.map((msg) => (
+            <div key={msg.id} className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}>
+              <div className={`max-w-[85%] rounded-2xl px-4 py-3 text-sm ${
+                msg.role === "user" ? "bg-peec-dark text-white" : "bg-stone-50 text-peec-dark"
+              }`}>
                 <MessageContent content={msg.content} isUser={msg.role === "user"} />
               </div>
             </div>
           ))}
 
-          {/* Thinking / Streaming message */}
           {streaming && (
             <div className="flex justify-start">
               <div className="max-w-[85%] rounded-2xl bg-stone-50 px-4 py-3 text-sm text-peec-dark">
@@ -194,7 +296,7 @@ export function AiChat() {
           />
           <button
             type="button"
-            onClick={() => sendMessage(input)}
+            onClick={() => void sendMessage(input)}
             disabled={!input.trim() || streaming}
             className="flex h-8 w-8 items-center justify-center rounded-full bg-peec-dark text-white transition-opacity disabled:opacity-30"
           >
@@ -206,13 +308,11 @@ export function AiChat() {
   );
 }
 
-// ─── Message Content Renderer ────────────────────────────────────
-// Renders markdown-like content with tables and bold text
+// ─── Message Content Renderer ───────────────────────────────────
 
 function MessageContent({ content, isUser }: { content: string; isUser: boolean }) {
   if (isUser) return <>{content}</>;
 
-  // Split content by lines and render
   const lines = content.split("\n");
   const elements: React.ReactNode[] = [];
   let i = 0;
@@ -220,7 +320,6 @@ function MessageContent({ content, isUser }: { content: string; isUser: boolean 
   while (i < lines.length) {
     const line = lines[i] as string;
 
-    // Table detection
     if (line.includes("|") && (lines[i + 1]?.includes("---") || lines[i + 1]?.includes("---|"))) {
       const tableLines: string[] = [];
       while (i < lines.length && (lines[i] as string).includes("|")) {
@@ -231,14 +330,12 @@ function MessageContent({ content, isUser }: { content: string; isUser: boolean 
       continue;
     }
 
-    // Empty line
     if (line.trim() === "") {
       elements.push(<div key={i} className="h-2" />);
       i += 1;
       continue;
     }
 
-    // Regular text with bold support
     elements.push(
       <p key={i} className="leading-relaxed">
         {renderBold(line)}
@@ -267,8 +364,6 @@ function InlineTable({ lines }: { lines: string[] }) {
   const headerLine = lines[0];
   if (!headerLine) return null;
   const headers = parseRow(headerLine);
-
-  // Skip separator line (index 1)
   const rows = lines.slice(2).map(parseRow);
 
   return (
@@ -277,9 +372,7 @@ function InlineTable({ lines }: { lines: string[] }) {
         <thead>
           <tr className="bg-stone-100/50">
             {headers.map((h, i) => (
-              <th key={i} className="px-2 py-1.5 text-left font-medium text-peec-dark">
-                {h}
-              </th>
+              <th key={i} className="px-2 py-1.5 text-left font-medium text-peec-dark">{h}</th>
             ))}
           </tr>
         </thead>
@@ -287,9 +380,7 @@ function InlineTable({ lines }: { lines: string[] }) {
           {rows.map((row, ri) => (
             <tr key={ri} className="border-t border-peec-border-light/30">
               {row.map((cell, ci) => (
-                <td key={ci} className="px-2 py-1.5 text-peec-text-secondary">
-                  {cell}
-                </td>
+                <td key={ci} className="px-2 py-1.5 text-peec-text-secondary">{cell}</td>
               ))}
             </tr>
           ))}

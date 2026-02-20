@@ -4,7 +4,6 @@ import { AnimatePresence, motion } from "framer-motion";
 import { AlertTriangle, Bell, CreditCard, Settings, User } from "lucide-react";
 import { useEffect, useRef } from "react";
 
-import { notificationsList } from "@/lib/mock-data";
 import { useDashboardStore } from "@/lib/store";
 
 import type { Notification } from "@/lib/store";
@@ -28,25 +27,11 @@ interface NotificationPanelProps {
 }
 
 export function NotificationPanel({ open, onClose }: NotificationPanelProps) {
-  const { notifications, unreadCount, markAsRead, markAllAsRead, setNotifications } =
-    useDashboardStore();
+  const notifications = useDashboardStore((s) => s.notifications);
+  const unreadCount = useDashboardStore((s) => s.unreadCount);
+  const markAsRead = useDashboardStore((s) => s.markAsRead);
+  const markAllAsRead = useDashboardStore((s) => s.markAllAsRead);
   const panelRef = useRef<HTMLDivElement>(null);
-
-  // Initialize notifications from mock data on first open
-  useEffect(() => {
-    if (notifications.length === 0) {
-      setNotifications(
-        notificationsList.map((n) => ({
-          id: n.id,
-          type: n.type,
-          title: n.title,
-          description: n.description,
-          timestamp: n.timestamp,
-          read: n.read,
-        })),
-      );
-    }
-  }, [notifications.length, setNotifications]);
 
   // Click outside to close
   useEffect(() => {

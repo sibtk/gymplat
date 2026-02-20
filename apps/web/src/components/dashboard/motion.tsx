@@ -119,3 +119,67 @@ export function PulseDot({ className }: { className?: string }) {
     </span>
   );
 }
+
+// ─── OrbPulse ────────────────────────────────────────────────────
+// Health score orb breathing animation
+
+export function OrbPulse({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <motion.div
+      animate={{ scale: [1, 1.02, 1] }}
+      transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── ScoreChange ─────────────────────────────────────────────────
+// Brief highlight + number spring when a risk score changes
+
+export function ScoreChange({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <motion.div
+      initial={{ scale: 1, backgroundColor: "transparent" }}
+      animate={{ scale: [1, 1.05, 1], backgroundColor: ["transparent", "rgba(245, 158, 11, 0.1)", "transparent"] }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── InsightSlide ────────────────────────────────────────────────
+// Copilot insight cards entering from the side
+
+export function InsightSlide({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, x: 20 }}
+      animate={{ opacity: 1, x: 0 }}
+      exit={{ opacity: 0, x: -20 }}
+      transition={{ duration: 0.3, ease: "easeOut" }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}
+
+// ─── TickerRoll ──────────────────────────────────────────────────
+// Revenue ticker number transitions (roll from below)
+
+export function TickerRoll({ children, className }: { children: ReactNode; className?: string }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, y: "100%" }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+      className={className}
+    >
+      {children}
+    </motion.div>
+  );
+}

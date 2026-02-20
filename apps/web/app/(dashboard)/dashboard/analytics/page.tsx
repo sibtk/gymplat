@@ -1,18 +1,20 @@
 "use client";
 
-import { Shield, TrendingUp, Users } from "lucide-react";
+import { Shield, Sparkles, TrendingUp, Users } from "lucide-react";
+import { useMemo } from "react";
 
-import { AnimatedNumber, CardHover, PageEntrance } from "@/components/dashboard/motion";
+import { MemberFlowSankey } from "@/components/dashboard/member-flow-sankey";
+import { AnimatedNumber, CardHover, PageEntrance, StaggerItem } from "@/components/dashboard/motion";
 import { RetentionChart } from "@/components/dashboard/retention-chart";
+import { RiskHeatmap } from "@/components/dashboard/risk-heatmap";
 import {
   cohortData,
   locationComparison,
   planComparison,
   retentionChartData,
   retentionChartMonths,
-  retentionImpact,
-  riskBuckets,
 } from "@/lib/mock-data";
+import { useGymStore } from "@/lib/store";
 
 function typeBadgeClass(type: string): string {
   switch (type) {
@@ -31,109 +33,168 @@ function typeBadgeClass(type: string): string {
 
 const impactIcons = [Users, TrendingUp, Shield];
 
-function parseImpactValue(value: string): { num: number; prefix: string; suffix: string } {
-  const cleaned = value.replace(/,/g, "");
-  const match = cleaned.match(/^([^0-9]*)([0-9.]+)(.*)$/);
-  if (!match) return { num: 0, prefix: "", suffix: "" };
-  return {
-    prefix: match[1] ?? "",
-    num: parseFloat(match[2] ?? "0"),
-    suffix: match[3] ?? "",
-  };
-}
-
 export default function AnalyticsPage() {
+  const members = useGymStore((s) => s.members);
+  const transactions = useGymStore((s) => s.transactions);
+  const riskAssessments = useGymStore((s) => s.riskAssessments);
+  const gymHealthScore = useGymStore((s) => s.gymHealthScore);
+
+  const { retentionImpact, riskBuckets } = useMemo(() => {
+    const total = members.length;
+    const active = members.filter((m) => m.status === "active").length;
+    const retentionRate = total > 0 ? Math.round((active / total) * 1000) / 10 : 0;
+
+    const totalRevenue = transactions
+      .filter((t) => t.type !== "refund" && t.status === "completed")
+      .reduce((sum, t) => sum + t.amount, 0);
+    const savedRevenue = Math.round(totalRevenue * 0.12);
+
+    const confidencePercent = gymHealthScore
+      ? Math.round(gymHealthScore.overall * 0.95)
+      : 85;
+
+    const impact = [
+      { label: "Members Retained", value: `${active}`, description: `${retentionRate}% retention rate across all locations` },
+      { label: "Revenue Saved", value: `$${savedRevenue.toLocaleString()}`, description: "Estimated revenue saved through retention efforts" },
+      { label: "Engine Confidence", value: `${confidencePercent}%`, description: "Retention engine prediction accuracy" },
+    ];
+
+    // Use real risk assessments for buckets
+    const assessments = Object.values(riskAssessments);
+    const lowRisk = assessments.filter((a) => a.riskLevel === "low" || a.riskLevel === "moderate").length;
+    const medRisk = assessments.filter((a) => a.riskLevel === "elevated").length;
+    const highRisk = assessments.filter((a) => a.riskLevel === "high" || a.riskLevel === "critical").length;
+
+    const bucketTotal = lowRisk + medRisk + highRisk;
+
+    const buckets = [
+      {
+        level: "Low",
+        count: lowRisk,
+        percentage: bucketTotal > 0 ? Math.round((lowRisk / bucketTotal) * 100) : 0,
+        color: "#22c55e",
+      },
+      {
+        level: "Medium",
+        count: medRisk,
+        percentage: bucketTotal > 0 ? Math.round((medRisk / bucketTotal) * 100) : 0,
+        color: "#f59e0b",
+      },
+      {
+        level: "High",
+        count: highRisk,
+        percentage: bucketTotal > 0 ? Math.round((highRisk / bucketTotal) * 100) : 0,
+        color: "#ef4444",
+      },
+    ];
+
+    return { retentionImpact: impact, riskBuckets: buckets };
+  }, [members, transactions, riskAssessments, gymHealthScore]);
+
   return (
     <PageEntrance>
       <div className="space-y-6">
-        <div>
-          <h1 className="text-xl font-bold text-peec-dark">Analytics</h1>
-          <p className="text-sm text-peec-text-muted">
-            Retention insights and churn analysis
-          </p>
-        </div>
+        <StaggerItem>
+          <div className="flex items-center justify-between">
+            <div>
+              <h1 className="text-xl font-bold text-peec-dark">Analytics</h1>
+              <p className="text-sm text-peec-text-muted">
+                Retention insights and churn analysis powered by the retention engine
+              </p>
+            </div>
+            {gymHealthScore && (
+              <div className="flex items-center gap-2 rounded-lg border border-purple-200 bg-purple-50/50 px-3 py-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-purple-500" />
+                <span className="text-xs text-purple-700">
+                  Health: {gymHealthScore.overall}/100
+                </span>
+              </div>
+            )}
+          </div>
+        </StaggerItem>
 
         {/* Impact Hero */}
-        <div className="grid grid-cols-1 gap-4 tablet:grid-cols-3">
-          {retentionImpact.map((item, idx) => {
-              const Icon = impactIcons[idx] as typeof Users;
-              const { num, prefix, suffix } = parseImpactValue(item.value);
-              return (
-                <CardHover key={item.label}>
-                  <div className="rounded-xl border border-peec-border-light bg-white p-5">
-                    <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
-                      <Icon className="h-5 w-5 text-green-600" />
+        <StaggerItem>
+          <div className="grid grid-cols-1 gap-4 tablet:grid-cols-3">
+            {retentionImpact.map((item, idx) => {
+                const Icon = impactIcons[idx] as typeof Users;
+                const cleaned = item.value.replace(/,/g, "");
+                const match = cleaned.match(/^([^0-9]*)([0-9.]+)(.*)$/);
+                const prefix = match?.[1] ?? "";
+                const num = parseFloat(match?.[2] ?? "0");
+                const suffix = match?.[3] ?? "";
+                return (
+                  <CardHover key={item.label}>
+                    <div className="rounded-xl border border-peec-border-light bg-white p-5">
+                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
+                        <Icon className="h-5 w-5 text-green-600" />
+                      </div>
+                      <p className="text-2xl font-bold text-peec-dark">
+                        <AnimatedNumber value={num} prefix={prefix} suffix={suffix} />
+                      </p>
+                      <p className="text-xs text-peec-text-muted">{item.label}</p>
+                      <p className="mt-1 text-2xs text-peec-text-muted">{item.description}</p>
                     </div>
-                    <p className="text-2xl font-bold text-peec-dark">
-                      <AnimatedNumber value={num} prefix={prefix} suffix={suffix} />
-                    </p>
-                    <p className="text-xs text-peec-text-muted">{item.label}</p>
-                    <p className="mt-1 text-2xs text-peec-text-muted">{item.description}</p>
-                  </div>
-                </CardHover>
-              );
-          })}
+                  </CardHover>
+                );
+            })}
+          </div>
+        </StaggerItem>
+
+        {/* Heatmap + Sankey */}
+        <div className="grid grid-cols-1 gap-6 desktop:grid-cols-2">
+          <StaggerItem>
+            <RiskHeatmap />
+          </StaggerItem>
+          <StaggerItem>
+            <MemberFlowSankey />
+          </StaggerItem>
         </div>
 
         {/* Full Retention Chart */}
-        <RetentionChart lines={retentionChartData} months={retentionChartMonths} />
+        <StaggerItem>
+          <RetentionChart lines={retentionChartData} months={retentionChartMonths} />
+        </StaggerItem>
 
         {/* Cohort Analysis */}
-        <div className="rounded-xl border border-peec-border-light bg-white p-5">
-            <h3 className="mb-1 text-sm font-semibold text-peec-dark">Cohort Analysis</h3>
-            <p className="mb-4 text-xs text-peec-text-muted">Member retention by signup month</p>
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-peec-border-light bg-stone-50/50">
-                    <th className="px-4 py-3 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
-                      Cohort
-                    </th>
-                    <th className="px-4 py-3 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
-                      Members
-                    </th>
-                    <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
-                      Month 1
-                    </th>
-                    <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
-                      Month 3
-                    </th>
-                    <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
-                      Month 6
-                    </th>
-                    <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
-                      Month 12
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {cohortData.map((row) => (
-                    <tr key={row.month} className="border-b border-peec-border-light/50 last:border-0">
-                      <td className="px-4 py-2.5 text-xs font-medium text-peec-dark">{row.month}</td>
-                      <td className="px-4 py-2.5 text-xs text-peec-text-secondary">{row.totalMembers}</td>
-                      <td className="px-4 py-2.5 text-center">
-                        <CohortCell value={row.m1} />
-                      </td>
-                      <td className="px-4 py-2.5 text-center">
-                        <CohortCell value={row.m3} />
-                      </td>
-                      <td className="px-4 py-2.5 text-center">
-                        <CohortCell value={row.m6} />
-                      </td>
-                      <td className="px-4 py-2.5 text-center">
-                        <CohortCell value={row.m12} />
-                      </td>
+        <StaggerItem>
+          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+              <h3 className="mb-1 text-sm font-semibold text-peec-dark">Cohort Analysis</h3>
+              <p className="mb-4 text-xs text-peec-text-muted">Member retention by signup month</p>
+              <div className="overflow-x-auto">
+                <table className="w-full">
+                  <thead>
+                    <tr className="border-b border-peec-border-light bg-stone-50/50">
+                      <th className="px-4 py-3 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Cohort</th>
+                      <th className="px-4 py-3 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Members</th>
+                      <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Month 1</th>
+                      <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Month 3</th>
+                      <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Month 6</th>
+                      <th className="px-4 py-3 text-center text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Month 12</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
+                  </thead>
+                  <tbody>
+                    {cohortData.map((row) => (
+                      <tr key={row.month} className="border-b border-peec-border-light/50 last:border-0">
+                        <td className="px-4 py-2.5 text-xs font-medium text-peec-dark">{row.month}</td>
+                        <td className="px-4 py-2.5 text-xs text-peec-text-secondary">{row.totalMembers}</td>
+                        <td className="px-4 py-2.5 text-center"><CohortCell value={row.m1} /></td>
+                        <td className="px-4 py-2.5 text-center"><CohortCell value={row.m3} /></td>
+                        <td className="px-4 py-2.5 text-center"><CohortCell value={row.m6} /></td>
+                        <td className="px-4 py-2.5 text-center"><CohortCell value={row.m12} /></td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
           </div>
+        </StaggerItem>
 
         {/* Risk Buckets */}
-        <div className="rounded-xl border border-peec-border-light bg-white p-5">
-          <h3 className="mb-1 text-sm font-semibold text-peec-dark">Churn Prediction Breakdown</h3>
-            <p className="mb-4 text-xs text-peec-text-muted">Members categorized by churn risk level</p>
+        <StaggerItem>
+          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+            <h3 className="mb-1 text-sm font-semibold text-peec-dark">Churn Prediction Breakdown</h3>
+            <p className="mb-4 text-xs text-peec-text-muted">Members categorized by engine-computed risk level</p>
             <div className="grid grid-cols-1 gap-4 tablet:grid-cols-3">
               {riskBuckets.map((bucket) => (
                 <CardHover key={bucket.level}>
@@ -156,7 +217,7 @@ export default function AnalyticsPage() {
                       <div
                         className="h-full rounded-full"
                         style={{
-                          width: `${(bucket.count / 234) * 100}%`,
+                          width: `${members.length > 0 ? (bucket.count / members.length) * 100 : 0}%`,
                           backgroundColor: bucket.color,
                         }}
                       />
@@ -164,12 +225,13 @@ export default function AnalyticsPage() {
                   </div>
                 </CardHover>
               ))}
+            </div>
           </div>
-        </div>
+        </StaggerItem>
 
         {/* Plan + Location Comparison */}
         <div className="grid grid-cols-1 gap-6 desktop:grid-cols-2">
-            {/* Plan comparison */}
+          <StaggerItem>
             <div className="rounded-xl border border-peec-border-light bg-white p-5">
               <h3 className="mb-1 text-sm font-semibold text-peec-dark">Plan Comparison</h3>
               <p className="mb-4 text-xs text-peec-text-muted">Retention by membership type</p>
@@ -200,8 +262,9 @@ export default function AnalyticsPage() {
                 </tbody>
               </table>
             </div>
+          </StaggerItem>
 
-            {/* Location comparison */}
+          <StaggerItem>
             <div className="rounded-xl border border-peec-border-light bg-white p-5">
               <h3 className="mb-1 text-sm font-semibold text-peec-dark">Location Comparison</h3>
               <p className="mb-4 text-xs text-peec-text-muted">Performance across gym locations</p>
@@ -223,9 +286,7 @@ export default function AnalyticsPage() {
                       <td className="py-2">
                         <span className="text-xs text-peec-dark">{loc.retention}</span>
                         {loc.delta !== undefined && (
-                          <span
-                            className={`ml-1 text-2xs ${loc.delta > 0 ? "text-green-500" : "text-red-500"}`}
-                          >
+                          <span className={`ml-1 text-2xs ${loc.delta > 0 ? "text-green-500" : "text-red-500"}`}>
                             {loc.delta > 0 ? "\u2191" : "\u2193"} {Math.abs(loc.delta)}
                           </span>
                         )}
@@ -237,6 +298,7 @@ export default function AnalyticsPage() {
                 </tbody>
               </table>
             </div>
+          </StaggerItem>
         </div>
       </div>
     </PageEntrance>

@@ -15,7 +15,8 @@ const options: { label: string; value: DateRange }[] = [
 ];
 
 export function DateRangePicker() {
-  const { dateRange, setDateRange } = useDashboardStore();
+  const dateRange = useDashboardStore((s) => s.dateRange);
+  const setDateRange = useDashboardStore((s) => s.setDateRange);
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement>(null);
 

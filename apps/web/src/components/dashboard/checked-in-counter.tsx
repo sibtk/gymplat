@@ -7,7 +7,8 @@ import { PulseDot } from "@/components/dashboard/motion";
 import { useDashboardStore } from "@/lib/store";
 
 export function CheckedInCounter() {
-  const { checkedInCount, incrementCheckedIn } = useDashboardStore();
+  const checkedInCount = useDashboardStore((s) => s.checkedInCount);
+  const incrementCheckedIn = useDashboardStore((s) => s.incrementCheckedIn);
   const ref = useRef<HTMLSpanElement>(null);
   const spring = useSpring(0, { duration: 600, bounce: 0 });
   const display = useTransform(spring, (latest: number) =>
