@@ -1,3 +1,7 @@
+"use client";
+
+import { PulseDot } from "@/components/dashboard/motion";
+
 interface StatusBadgeProps {
   status: "active" | "at-risk" | "churned" | "critical";
 }
@@ -21,17 +25,21 @@ export function StatusBadge({ status }: StatusBadgeProps) {
     <span
       className={`inline-flex items-center rounded-full px-2 py-0.5 text-2xs font-medium ${styles[status]}`}
     >
-      <span
-        className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
-          status === "active"
-            ? "bg-green-500"
-            : status === "at-risk"
+      {status === "active" ? (
+        <span className="mr-1.5">
+          <PulseDot />
+        </span>
+      ) : (
+        <span
+          className={`mr-1.5 h-1.5 w-1.5 rounded-full ${
+            status === "at-risk"
               ? "bg-amber-500"
               : status === "critical"
                 ? "bg-red-500"
                 : "bg-stone-400"
-        }`}
-      />
+          }`}
+        />
+      )}
       {labels[status]}
     </span>
   );

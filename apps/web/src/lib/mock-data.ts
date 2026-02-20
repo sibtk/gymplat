@@ -84,6 +84,56 @@ export interface AiAction {
   status: "success" | "pending" | "failed";
 }
 
+export interface Transaction {
+  id: string;
+  member: string;
+  amount: string;
+  type: "subscription" | "one-time" | "refund";
+  status: "completed" | "pending" | "failed";
+  method: "card" | "bank" | "wallet";
+  date: string;
+}
+
+export interface NotificationItem {
+  id: string;
+  type: "alert" | "payment" | "member" | "system";
+  title: string;
+  description: string;
+  timestamp: string;
+  read: boolean;
+}
+
+export interface StaffMember {
+  id: string;
+  name: string;
+  email: string;
+  role: "owner" | "manager" | "trainer" | "front-desk";
+  avatar: string;
+  joinedAt: string;
+}
+
+export interface ChatMessage {
+  id: string;
+  role: "user" | "assistant";
+  content: string;
+  timestamp: string;
+}
+
+export interface RevenueDataPoint {
+  month: string;
+  mrr: number;
+  transactions: number;
+}
+
+export interface FailedPayment {
+  id: string;
+  member: string;
+  amount: string;
+  reason: string;
+  date: string;
+  retryCount: number;
+}
+
 export interface PlanComparison {
   rank: number;
   name: string;
@@ -256,4 +306,119 @@ export const riskBuckets: RiskBucket[] = [
   { level: "High", count: 23, percentage: 0.8, color: "#ef4444" },
   { level: "Medium", count: 89, percentage: 3.1, color: "#f59e0b" },
   { level: "Low", count: 122, percentage: 4.3, color: "#22c55e" },
+];
+
+// ─── Transactions ────────────────────────────────────────────────
+
+export const transactions: Transaction[] = [
+  { id: "t1", member: "James Wilson", amount: "$49.99", type: "subscription", status: "completed", method: "card", date: "Feb 19, 2026" },
+  { id: "t2", member: "Emma Brown", amount: "$49.99", type: "subscription", status: "completed", method: "card", date: "Feb 19, 2026" },
+  { id: "t3", member: "Sarah Chen", amount: "$79.99", type: "subscription", status: "failed", method: "card", date: "Feb 18, 2026" },
+  { id: "t4", member: "Noah Garcia", amount: "$479.88", type: "subscription", status: "completed", method: "bank", date: "Feb 18, 2026" },
+  { id: "t5", member: "Harper Hall", amount: "$79.99", type: "subscription", status: "completed", method: "card", date: "Feb 18, 2026" },
+  { id: "t6", member: "Olivia Martinez", amount: "$49.99", type: "subscription", status: "completed", method: "wallet", date: "Feb 17, 2026" },
+  { id: "t7", member: "Mike Torres", amount: "$29.99", type: "subscription", status: "pending", method: "card", date: "Feb 17, 2026" },
+  { id: "t8", member: "Lisa Park", amount: "$119.99", type: "subscription", status: "completed", method: "card", date: "Feb 17, 2026" },
+  { id: "t9", member: "David Kim", amount: "$25.00", type: "refund", status: "completed", method: "card", date: "Feb 16, 2026" },
+  { id: "t10", member: "Sophia Nguyen", amount: "$49.99", type: "subscription", status: "completed", method: "bank", date: "Feb 16, 2026" },
+  { id: "t11", member: "Liam Johnson", amount: "$119.99", type: "subscription", status: "completed", method: "card", date: "Feb 16, 2026" },
+  { id: "t12", member: "Ana Rodriguez", amount: "$19.99", type: "subscription", status: "failed", method: "card", date: "Feb 15, 2026" },
+  { id: "t13", member: "Ryan Lee", amount: "$29.99", type: "subscription", status: "completed", method: "card", date: "Feb 15, 2026" },
+  { id: "t14", member: "Nicole Adams", amount: "$79.99", type: "subscription", status: "completed", method: "wallet", date: "Feb 15, 2026" },
+  { id: "t15", member: "Chris Taylor", amount: "$19.99", type: "refund", status: "completed", method: "card", date: "Feb 14, 2026" },
+  { id: "t16", member: "Mia Robinson", amount: "$29.99", type: "subscription", status: "completed", method: "card", date: "Feb 14, 2026" },
+  { id: "t17", member: "Isabella Lewis", amount: "$119.99", type: "subscription", status: "completed", method: "bank", date: "Feb 13, 2026" },
+  { id: "t18", member: "Mason Walker", amount: "$19.99", type: "subscription", status: "pending", method: "card", date: "Feb 13, 2026" },
+  { id: "t19", member: "Ethan Wright", amount: "$29.99", type: "subscription", status: "completed", method: "card", date: "Feb 12, 2026" },
+  { id: "t20", member: "Jack Allen", amount: "$29.99", type: "subscription", status: "failed", method: "card", date: "Feb 12, 2026" },
+];
+
+// ─── Notifications ───────────────────────────────────────────────
+
+export const notificationsList: NotificationItem[] = [
+  { id: "n1", type: "alert", title: "Critical risk: Sarah Chen", description: "Risk score increased to 92. No check-in for 21 days.", timestamp: "5 min ago", read: false },
+  { id: "n2", type: "payment", title: "Payment failed", description: "Sarah Chen's monthly payment was declined.", timestamp: "15 min ago", read: false },
+  { id: "n3", type: "member", title: "New signup", description: "Harper Hall signed up for Premium plan.", timestamp: "32 min ago", read: false },
+  { id: "n4", type: "system", title: "Weekly report ready", description: "Your weekly retention report is available.", timestamp: "1 hr ago", read: false },
+  { id: "n5", type: "alert", title: "Risk score update", description: "Mike Torres risk score increased to 87.", timestamp: "2 hrs ago", read: true },
+  { id: "n6", type: "payment", title: "Annual payment received", description: "Noah Garcia paid $479.88 for annual plan.", timestamp: "3 hrs ago", read: true },
+  { id: "n7", type: "member", title: "Cancellation", description: "Ava Thompson cancelled Student plan.", timestamp: "4 hrs ago", read: true },
+  { id: "n8", type: "system", title: "AI model updated", description: "Churn prediction model retrained with latest data.", timestamp: "5 hrs ago", read: true },
+  { id: "n9", type: "alert", title: "Capacity alert", description: "Downtown location at 95% capacity.", timestamp: "6 hrs ago", read: true },
+  { id: "n10", type: "payment", title: "Refund processed", description: "David Kim refund of $25.00 completed.", timestamp: "8 hrs ago", read: true },
+];
+
+// ─── Staff ───────────────────────────────────────────────────────
+
+export const staffMembers: StaffMember[] = [
+  { id: "s1", name: "Alex Thompson", email: "alex@irontemple.com", role: "owner", avatar: "AT", joinedAt: "Jan 2023" },
+  { id: "s2", name: "Jordan Rivera", email: "jordan@irontemple.com", role: "manager", avatar: "JR", joinedAt: "Mar 2023" },
+  { id: "s3", name: "Casey Mitchell", email: "casey@irontemple.com", role: "trainer", avatar: "CM", joinedAt: "Jun 2023" },
+  { id: "s4", name: "Sam Patel", email: "sam@irontemple.com", role: "trainer", avatar: "SP", joinedAt: "Sep 2023" },
+  { id: "s5", name: "Taylor Brooks", email: "taylor@irontemple.com", role: "front-desk", avatar: "TB", joinedAt: "Jan 2024" },
+  { id: "s6", name: "Morgan Lee", email: "morgan@irontemple.com", role: "front-desk", avatar: "ML", joinedAt: "Apr 2024" },
+];
+
+// ─── Revenue Data ────────────────────────────────────────────────
+
+export const revenueData: RevenueDataPoint[] = [
+  { month: "Mar", mrr: 98200, transactions: 1842 },
+  { month: "Apr", mrr: 101400, transactions: 1920 },
+  { month: "May", mrr: 104800, transactions: 1988 },
+  { month: "Jun", mrr: 108100, transactions: 2045 },
+  { month: "Jul", mrr: 106300, transactions: 2010 },
+  { month: "Aug", mrr: 109700, transactions: 2078 },
+  { month: "Sep", mrr: 112400, transactions: 2134 },
+  { month: "Oct", mrr: 115800, transactions: 2201 },
+  { month: "Nov", mrr: 118200, transactions: 2245 },
+  { month: "Dec", mrr: 121600, transactions: 2312 },
+  { month: "Jan", mrr: 124300, transactions: 2367 },
+  { month: "Feb", mrr: 127400, transactions: 2420 },
+];
+
+export const paymentMethodDistribution = [
+  { method: "Credit Card", percentage: 62, count: 1765 },
+  { method: "Bank Transfer", percentage: 24, count: 684 },
+  { method: "Digital Wallet", percentage: 14, count: 399 },
+];
+
+export const failedPayments: FailedPayment[] = [
+  { id: "f1", member: "Sarah Chen", amount: "$79.99", reason: "Card declined — insufficient funds", date: "Feb 18, 2026", retryCount: 2 },
+  { id: "f2", member: "Ana Rodriguez", amount: "$19.99", reason: "Card expired", date: "Feb 15, 2026", retryCount: 1 },
+  { id: "f3", member: "Jack Allen", amount: "$29.99", reason: "Card declined — bank rejection", date: "Feb 12, 2026", retryCount: 3 },
+];
+
+// ─── AI Chat ─────────────────────────────────────────────────────
+
+export const aiConversationStarters = [
+  "Which members are most likely to churn?",
+  "Show me revenue trends this quarter",
+  "What's driving our retention improvements?",
+  "Compare plan performance",
+  "Suggest a win-back campaign",
+];
+
+export const aiCannedResponses: Record<string, string> = {
+  churn: `Based on my analysis, **10 members** are currently at high risk of churning. Here are the top 5:\n\n| Member | Risk Score | Last Visit | Primary Factor |\n|--------|-----------|------------|----------------|\n| Sarah Chen | 92% | 21 days ago | Payment declined |\n| Mike Torres | 87% | 18 days ago | 60% frequency drop |\n| Lisa Park | 81% | 14 days ago | Complaint filed |\n| James Wilson | 74% | 12 days ago | Weekend-only |\n| Ana Rodriguez | 68% | 10 days ago | Low engagement |\n\nI recommend immediate outreach for Sarah and Mike — their risk scores have increased 15+ points in the last week.`,
+  revenue: `Here's your revenue snapshot for this quarter:\n\n| Metric | Value | Change |\n|--------|-------|--------|\n| MRR | $127,400 | +5.8% |\n| ARR | $1,528,800 | +12.4% |\n| Avg per member | $44.76 | +2.1% |\n| Failed payments | 3 | -40% |\n\nRevenue has grown consistently for the past 6 months. The biggest driver is Premium plan upgrades, which account for 34% of new MRR this quarter.`,
+  retention: `Your retention is improving due to three key factors:\n\n1. **AI interventions** — 142 members saved through automated outreach this quarter\n2. **PT Package growth** — 15% of members now on PT plans (96% retention rate)\n3. **Class optimization** — Tuesday/Thursday schedule changes reduced wait times by 35%\n\nThe Student plan remains a concern at 50% retention. Consider adding a study-break fitness program to boost engagement.`,
+  plan: `Here's how each plan is performing:\n\n| Plan | Members | Retention | MRR Share |\n|------|---------|-----------|----------|\n| 24/7 Access | 1,196 | 78% | 42% |\n| Premium | 797 | 88% | 28% |\n| PT Package | 427 | 92% | 15% |\n| Student | 285 | 50% | 10% |\n| Corporate | 142 | 82% | 5% |\n\nPT Package has the highest retention but only 15% of members. Upselling 24/7 Access members to Premium could add ~$4,200/mo in MRR.`,
+  campaign: `I recommend a **3-phase win-back campaign**:\n\n**Phase 1: Soft touch** (Days 1-3)\n- Personalized email with workout summary from their best month\n- Subject line: "We saved your favorite workout"\n\n**Phase 2: Incentive** (Day 7)\n- 30-day free trial offer\n- Include a free PT consultation\n\n**Phase 3: Final offer** (Day 14)\n- 20% discount for 3 months\n- Personal phone call from manager\n\nEstimated impact: **22 members recovered**, adding ~$1,100/mo in recurring revenue. Shall I set this up?`,
+  hello: "Hi! I'm your AI retention assistant. I can help you analyze member behavior, predict churn, optimize revenue, and design engagement campaigns. What would you like to explore?",
+  help: "I can help you with:\n\n- **Churn prediction** — identify at-risk members\n- **Revenue analysis** — trends, forecasts, plan performance\n- **Campaign design** — win-back, re-engagement, upsell\n- **Member insights** — behavior patterns, engagement scores\n- **Scheduling** — class optimization, capacity planning\n\nJust ask me anything about your gym's performance!",
+};
+
+// ─── Live Activity Pool (for simulation) ─────────────────────────
+
+export const liveActivityPool: ActivityEvent[] = [
+  { id: "l1", type: "check-in", description: "checked in at Downtown", timestamp: "just now", member: "Ryan Lee" },
+  { id: "l2", type: "payment", description: "monthly payment processed ($79.99)", timestamp: "just now", member: "Nicole Adams" },
+  { id: "l3", type: "check-in", description: "checked in at Westside", timestamp: "just now", member: "Ethan Wright" },
+  { id: "l4", type: "signup", description: "signed up for Student plan", timestamp: "just now", member: "Alex Park" },
+  { id: "l5", type: "check-in", description: "checked in at Eastgate", timestamp: "just now", member: "Isabella Lewis" },
+  { id: "l6", type: "check-in", description: "checked in at Campus", timestamp: "just now", member: "Mason Walker" },
+  { id: "l7", type: "alert", description: "engagement score dropped below 40", timestamp: "just now", member: "Jack Allen" },
+  { id: "l8", type: "payment", description: "PT session payment ($35.00)", timestamp: "just now", member: "Liam Johnson" },
+  { id: "l9", type: "check-in", description: "checked in at Business Park", timestamp: "just now", member: "Sophia Nguyen" },
+  { id: "l10", type: "check-in", description: "checked in at Downtown", timestamp: "just now", member: "Mia Robinson" },
 ];

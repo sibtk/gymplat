@@ -20,6 +20,7 @@ interface DataTableProps<T> {
   filters?: { label: string; value: string }[];
   filterKey?: keyof T;
   emptyMessage?: string;
+  onRowClick?: (row: T) => void;
 }
 
 export function DataTable<T>({
@@ -30,6 +31,7 @@ export function DataTable<T>({
   filters,
   filterKey,
   emptyMessage = "No data found",
+  onRowClick,
 }: DataTableProps<T>) {
   const [search, setSearch] = useState("");
   const [activeFilter, setActiveFilter] = useState("all");
@@ -134,7 +136,8 @@ export function DataTable<T>({
               filtered.map((row, idx) => (
                 <tr
                   key={idx}
-                  className="border-b border-peec-border-light/50 transition-colors last:border-0 hover:bg-stone-50/50"
+                  onClick={onRowClick ? () => onRowClick(row) : undefined}
+                  className={`border-b border-peec-border-light/50 transition-colors last:border-0 hover:bg-stone-50/50 ${onRowClick ? "cursor-pointer" : ""}`}
                 >
                   {columns.map((col) => (
                     <td key={col.key} className={`px-4 py-3 ${col.className ?? ""}`}>

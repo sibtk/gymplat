@@ -14,6 +14,7 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
+import { PulseDot } from "@/components/dashboard/motion";
 import { logout } from "@/lib/auth";
 
 const navItems = [
@@ -87,6 +88,9 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
               >
                 <Icon className="h-4 w-4" />
                 {item.label}
+                {item.label === "Overview" && !mobile && (
+                  <PulseDot className="ml-auto" />
+                )}
               </Link>
             );
           })}

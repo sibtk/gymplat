@@ -1,6 +1,10 @@
 "use client";
 
+import { useState } from "react";
+
 import { DataTable } from "@/components/dashboard/data-table";
+import { MemberDetailDrawer } from "@/components/dashboard/member-detail-drawer";
+import { PageEntrance } from "@/components/dashboard/motion";
 import { StatusBadge } from "@/components/dashboard/status-badge";
 import { membersList } from "@/lib/mock-data";
 
@@ -60,24 +64,41 @@ const filters = [
 ];
 
 export default function MembersPage() {
+  const [selectedMember, setSelectedMember] = useState<Member | null>(null);
+  const [drawerOpen, setDrawerOpen] = useState(false);
+
+  const handleRowClick = (member: Member) => {
+    setSelectedMember(member);
+    setDrawerOpen(true);
+  };
+
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-xl font-bold text-peec-dark">Members</h1>
-        <p className="text-sm text-peec-text-tertiary">
-          Manage and monitor all gym members
-        </p>
+    <PageEntrance>
+      <div className="space-y-6">
+        <div>
+          <h1 className="text-xl font-bold text-peec-dark">Members</h1>
+          <p className="text-sm text-peec-text-tertiary">
+            Manage and monitor all gym members
+          </p>
+        </div>
+
+        <DataTable<Member>
+          data={membersList}
+          columns={columns}
+          searchable
+          searchKeys={["name", "email", "plan"]}
+          filters={filters}
+          filterKey="status"
+          emptyMessage="No members found"
+          onRowClick={handleRowClick}
+        />
       </div>
 
-      <DataTable<Member>
-        data={membersList}
-        columns={columns}
-        searchable
-        searchKeys={["name", "email", "plan"]}
-        filters={filters}
-        filterKey="status"
-        emptyMessage="No members found"
+      <MemberDetailDrawer
+        member={selectedMember}
+        open={drawerOpen}
+        onClose={() => setDrawerOpen(false)}
       />
-    </div>
+    </PageEntrance>
   );
 }
