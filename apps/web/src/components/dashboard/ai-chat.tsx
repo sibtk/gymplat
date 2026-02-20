@@ -104,7 +104,7 @@ export function AiChat() {
   };
 
   return (
-    <div className="rounded-2xl border border-peec-border-light bg-white shadow-card">
+    <div className="rounded-xl border border-peec-border-light bg-white">
       {/* Header */}
       <div className="flex items-center gap-2 border-b border-peec-border-light px-5 py-3">
         <MessageSquareText className="h-4 w-4 text-peec-text-muted" />

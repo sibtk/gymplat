@@ -64,14 +64,14 @@ export function DataTable<T>({
       {(searchable || filters) && (
         <div className="mb-4 flex flex-wrap items-center gap-3">
           {searchable && (
-            <div className="flex items-center gap-2 rounded-lg border border-peec-border-light bg-white px-3 py-2">
+            <div className="flex items-center gap-2 rounded-lg border border-peec-border-light bg-white px-3 py-2 focus-within:border-peec-dark focus-within:ring-1 focus-within:ring-peec-dark">
               <Search className="h-4 w-4 text-peec-text-muted" />
               <input
                 type="text"
                 placeholder="Search..."
                 value={search}
                 onChange={(e) => setSearch(e.target.value)}
-                className="w-48 bg-transparent text-sm text-peec-dark placeholder:text-peec-text-muted focus:outline-none"
+                className="w-48 bg-transparent text-sm text-peec-dark placeholder:text-peec-text-muted focus:outline-none focus:ring-0"
               />
             </div>
           )}
@@ -83,7 +83,7 @@ export function DataTable<T>({
                 className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                   activeFilter === "all"
                     ? "bg-peec-dark text-white"
-                    : "bg-stone-100 text-peec-text-tertiary hover:text-peec-dark"
+                    : "bg-stone-100 text-peec-text-muted hover:text-peec-dark"
                 }`}
               >
                 All
@@ -96,7 +96,7 @@ export function DataTable<T>({
                   className={`rounded-full px-3 py-1 text-xs font-medium transition-colors ${
                     activeFilter === f.value
                       ? "bg-peec-dark text-white"
-                      : "bg-stone-100 text-peec-text-tertiary hover:text-peec-dark"
+                      : "bg-stone-100 text-peec-text-muted hover:text-peec-dark"
                   }`}
                 >
                   {f.label}

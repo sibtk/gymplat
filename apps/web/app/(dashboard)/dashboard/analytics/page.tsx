@@ -48,7 +48,7 @@ export default function AnalyticsPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-bold text-peec-dark">Analytics</h1>
-          <p className="text-sm text-peec-text-tertiary">
+          <p className="text-sm text-peec-text-muted">
             Retention insights and churn analysis
           </p>
         </div>
@@ -60,14 +60,14 @@ export default function AnalyticsPage() {
               const { num, prefix, suffix } = parseImpactValue(item.value);
               return (
                 <CardHover key={item.label}>
-                  <div className="rounded-xl border border-peec-border-light bg-white p-5 shadow-card">
+                  <div className="rounded-xl border border-peec-border-light bg-white p-5">
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
                       <Icon className="h-5 w-5 text-green-600" />
                     </div>
                     <p className="text-2xl font-bold text-peec-dark">
                       <AnimatedNumber value={num} prefix={prefix} suffix={suffix} />
                     </p>
-                    <p className="text-xs text-peec-text-tertiary">{item.label}</p>
+                    <p className="text-xs text-peec-text-muted">{item.label}</p>
                     <p className="mt-1 text-2xs text-peec-text-muted">{item.description}</p>
                   </div>
                 </CardHover>
@@ -175,12 +175,12 @@ export default function AnalyticsPage() {
               <p className="mb-4 text-xs text-peec-text-muted">Retention by membership type</p>
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-2xs text-peec-text-muted">
-                    <th className="pb-2 font-normal">#</th>
-                    <th className="pb-2 font-normal">Plan</th>
-                    <th className="pb-2 font-normal">Type</th>
-                    <th className="pb-2 font-normal">Share</th>
-                    <th className="pb-2 font-normal">Retention</th>
+                  <tr className="border-b border-peec-border-light bg-stone-50/50">
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">#</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Plan</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Type</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Share</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Retention</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -207,12 +207,12 @@ export default function AnalyticsPage() {
               <p className="mb-4 text-xs text-peec-text-muted">Performance across gym locations</p>
               <table className="w-full">
                 <thead>
-                  <tr className="text-left text-2xs text-peec-text-muted">
-                    <th className="pb-2 font-normal">#</th>
-                    <th className="pb-2 font-normal">Location</th>
-                    <th className="pb-2 font-normal">Retention</th>
-                    <th className="pb-2 font-normal">Members</th>
-                    <th className="pb-2 font-normal">Score</th>
+                  <tr className="border-b border-peec-border-light bg-stone-50/50">
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">#</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Location</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Retention</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Members</th>
+                    <th className="px-3 py-2.5 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted">Score</th>
                   </tr>
                 </thead>
                 <tbody>

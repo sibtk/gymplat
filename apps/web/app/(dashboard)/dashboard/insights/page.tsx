@@ -45,7 +45,7 @@ export default function InsightsPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-bold text-peec-dark">AI Insights</h1>
-          <p className="text-sm text-peec-text-tertiary">
+          <p className="text-sm text-peec-text-muted">
             AI-powered retention analysis and recommendations
           </p>
         </div>
@@ -59,7 +59,7 @@ export default function InsightsPage() {
             <div className="grid grid-cols-1 gap-4 tablet:grid-cols-2">
               {aiRecommendations.map((rec) => (
                 <CardHover key={rec.id}>
-                  <div className="rounded-xl border border-peec-border-light bg-white p-5 shadow-card">
+                  <div className="rounded-xl border border-peec-border-light bg-white p-5">
                     <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-purple-50">
                       <Brain className="h-5 w-5 text-purple-600" />
                     </div>
@@ -91,7 +91,7 @@ export default function InsightsPage() {
             <div className="grid grid-cols-1 gap-4 tablet:grid-cols-2">
               {weeklyAtRisk.map((member) => (
                 <CardHover key={member.id}>
-                  <div className="rounded-xl border border-peec-border-light bg-white p-4">
+                  <div className="rounded-xl border border-peec-border-light bg-white p-5">
                     <div className="mb-3 flex items-center justify-between">
                       <div className="flex items-center gap-3">
                         <div className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-xs font-medium text-peec-dark">
@@ -173,7 +173,7 @@ export default function InsightsPage() {
                 const colorClass = campaignColors[campaign.type] ?? "bg-stone-50 text-stone-600";
                 return (
                   <CardHover key={campaign.id}>
-                    <div className="rounded-xl border border-peec-border-light bg-white p-5 shadow-card">
+                    <div className="rounded-xl border border-peec-border-light bg-white p-5">
                       <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${colorClass}`}>
                         <Icon className="h-5 w-5" />
                       </div>

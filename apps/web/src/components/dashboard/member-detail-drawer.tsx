@@ -156,7 +156,7 @@ export function MemberDetailDrawer({ member, open, onClose }: MemberDetailDrawer
                 <button
                   type="button"
                   onClick={() => toast(`Email sent to ${member.name}`)}
-                  className="flex items-center justify-center gap-2 rounded-lg bg-peec-dark px-4 py-2.5 text-sm font-medium text-white transition-colors hover:bg-stone-800"
+                  className="flex items-center justify-center gap-2 rounded-lg bg-peec-dark px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-stone-800"
                 >
                   <Mail className="h-4 w-4" />
                   Send Email
@@ -164,7 +164,7 @@ export function MemberDetailDrawer({ member, open, onClose }: MemberDetailDrawer
                 <button
                   type="button"
                   onClick={() => toast(`Discount offer sent to ${member.name}`)}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-peec-border-light px-4 py-2.5 text-sm font-medium text-peec-dark transition-colors hover:bg-stone-50"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-peec-border-light px-4 py-2 text-sm font-medium text-peec-dark transition-colors hover:bg-stone-50"
                 >
                   <Gift className="h-4 w-4" />
                   Offer Discount
@@ -172,7 +172,7 @@ export function MemberDetailDrawer({ member, open, onClose }: MemberDetailDrawer
                 <button
                   type="button"
                   onClick={() => toast(`Call scheduled with ${member.name}`)}
-                  className="flex items-center justify-center gap-2 rounded-lg border border-peec-border-light px-4 py-2.5 text-sm font-medium text-peec-dark transition-colors hover:bg-stone-50"
+                  className="flex items-center justify-center gap-2 rounded-lg border border-peec-border-light px-4 py-2 text-sm font-medium text-peec-dark transition-colors hover:bg-stone-50"
                 >
                   <Phone className="h-4 w-4" />
                   Schedule Call

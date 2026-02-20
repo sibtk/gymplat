@@ -30,8 +30,8 @@ export function StatCard({ stat }: StatCardProps) {
 
   return (
     <CardHover>
-      <div className="rounded-xl border border-peec-border-light bg-white p-4 shadow-card">
-        <p className="mb-1 text-xs text-peec-text-tertiary">{stat.label}</p>
+      <div className="rounded-xl border border-peec-border-light bg-white p-5">
+        <p className="mb-1 text-xs text-peec-text-muted">{stat.label}</p>
         <div className="flex items-end justify-between">
           <p className="text-2xl font-bold text-peec-dark">
             <AnimatedNumber value={num} prefix={prefix} suffix={suffix} />

@@ -34,7 +34,7 @@ export default function DashboardOverviewPage() {
       <div className="space-y-6">
         {/* Stats banner */}
         <div className="flex flex-wrap items-center gap-3">
-          <div className="flex-1 rounded-xl border border-peec-border-light bg-white px-5 py-3 shadow-card">
+          <div className="flex-1 rounded-xl border border-peec-border-light bg-white px-5 py-3">
             <div className="flex items-center gap-2 text-sm text-peec-dark">
               <TrendingUp className="h-4 w-4 text-green-500" />
               <span>

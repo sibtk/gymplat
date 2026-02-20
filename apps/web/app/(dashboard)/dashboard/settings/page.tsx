@@ -56,7 +56,7 @@ export default function SettingsPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-bold text-peec-dark">Settings</h1>
-          <p className="text-sm text-peec-text-tertiary">
+          <p className="text-sm text-peec-text-muted">
             Manage your gym configuration
           </p>
         </div>
@@ -71,7 +71,7 @@ export default function SettingsPage() {
               className={`rounded-md px-4 py-2 text-sm font-medium transition-colors ${
                 activeTab === tab
                   ? "bg-white text-peec-dark shadow-sm"
-                  : "text-peec-text-tertiary hover:text-peec-dark"
+                  : "text-peec-text-muted hover:text-peec-dark"
               }`}
             >
               {tab}

@@ -77,7 +77,7 @@ export default function MembersPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-bold text-peec-dark">Members</h1>
-          <p className="text-sm text-peec-text-tertiary">
+          <p className="text-sm text-peec-text-muted">
             Manage and monitor all gym members
           </p>
         </div>

@@ -83,7 +83,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
                 className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
                   active
                     ? "border border-peec-border-light bg-white font-medium text-peec-dark shadow-sm"
-                    : "text-peec-text-tertiary hover:bg-stone-100 hover:text-peec-dark"
+                    : "text-peec-text-muted hover:bg-stone-100 hover:text-peec-dark"
                 }`}
               >
                 <Icon className="h-4 w-4" />
@@ -102,7 +102,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
         <button
           type="button"
           onClick={handleLogout}
-          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-peec-text-tertiary transition-colors hover:bg-stone-100 hover:text-peec-dark"
+          className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-peec-text-muted transition-colors hover:bg-stone-100 hover:text-peec-dark"
         >
           <LogOut className="h-4 w-4" />
           Sign out

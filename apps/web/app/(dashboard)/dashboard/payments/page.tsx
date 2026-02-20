@@ -102,7 +102,7 @@ export default function PaymentsPage() {
       <div className="space-y-6">
         <div>
           <h1 className="text-xl font-bold text-peec-dark">Payments</h1>
-          <p className="text-sm text-peec-text-tertiary">
+          <p className="text-sm text-peec-text-muted">
             Revenue tracking and payment management
           </p>
         </div>
@@ -110,8 +110,8 @@ export default function PaymentsPage() {
         {/* Revenue KPIs */}
         <div className="grid grid-cols-1 gap-4 tablet:grid-cols-3">
             <CardHover>
-              <div className="rounded-xl border border-peec-border-light bg-white p-5 shadow-card">
-                <p className="mb-1 text-xs text-peec-text-tertiary">Monthly Recurring Revenue</p>
+              <div className="rounded-xl border border-peec-border-light bg-white p-5">
+                <p className="mb-1 text-xs text-peec-text-muted">Monthly Recurring Revenue</p>
                 <p className="text-2xl font-bold text-peec-dark">
                   <AnimatedNumber value={127400} prefix="$" />
                 </p>
@@ -119,8 +119,8 @@ export default function PaymentsPage() {
               </div>
             </CardHover>
             <CardHover>
-              <div className="rounded-xl border border-peec-border-light bg-white p-5 shadow-card">
-                <p className="mb-1 text-xs text-peec-text-tertiary">Annual Run Rate</p>
+              <div className="rounded-xl border border-peec-border-light bg-white p-5">
+                <p className="mb-1 text-xs text-peec-text-muted">Annual Run Rate</p>
                 <p className="text-2xl font-bold text-peec-dark">
                   <AnimatedNumber value={1528800} prefix="$" />
                 </p>
@@ -128,8 +128,8 @@ export default function PaymentsPage() {
               </div>
             </CardHover>
             <CardHover>
-              <div className="rounded-xl border border-peec-border-light bg-white p-5 shadow-card">
-                <p className="mb-1 text-xs text-peec-text-tertiary">Avg Revenue / Member</p>
+              <div className="rounded-xl border border-peec-border-light bg-white p-5">
+                <p className="mb-1 text-xs text-peec-text-muted">Avg Revenue / Member</p>
                 <p className="text-2xl font-bold text-peec-dark">
                   $<AnimatedNumber value={44.76} />
                 </p>
