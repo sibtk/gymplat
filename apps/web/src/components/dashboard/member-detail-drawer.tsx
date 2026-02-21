@@ -282,7 +282,7 @@ function OverviewTab({ member }: { member: NonNullable<ReturnType<typeof useMemb
 
       {/* Visit Frequency */}
       <div>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+        <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
           Visit Frequency (Last 4 Weeks)
         </h3>
         <div className="flex items-end gap-3">
@@ -303,7 +303,7 @@ function OverviewTab({ member }: { member: NonNullable<ReturnType<typeof useMemb
       {/* Risk Summary from engine */}
       {assessment && assessment.riskLevel !== "low" && (
         <div>
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+          <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
             Risk Summary
           </h3>
           <p className="rounded-lg border border-amber-200 bg-amber-50/50 p-3 text-xs text-amber-900">
@@ -314,7 +314,7 @@ function OverviewTab({ member }: { member: NonNullable<ReturnType<typeof useMemb
 
       {/* Membership Details */}
       <div>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+        <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
           Membership Details
         </h3>
         <div className="grid grid-cols-2 gap-3">
@@ -330,7 +330,7 @@ function OverviewTab({ member }: { member: NonNullable<ReturnType<typeof useMemb
       {/* Tags */}
       {member.tags.length > 0 && (
         <div>
-          <h3 className="mb-2 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">Tags</h3>
+          <h3 className="mb-2 text-xs font-medium text-peec-text-muted">Tags</h3>
           <div className="flex flex-wrap gap-1.5">
             {member.tags.map((tag) => (
               <span key={tag} className="rounded-full bg-stone-100 px-2 py-0.5 text-2xs text-peec-text-secondary">
@@ -368,7 +368,7 @@ function RiskTab({ memberId, memberName }: { memberId: string; memberName: strin
     <div className="space-y-5">
       {/* Score Breakdown */}
       <div>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+        <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
           Risk Assessment
         </h3>
         <ScoreBreakdownCard assessment={assessment} />
@@ -377,7 +377,7 @@ function RiskTab({ memberId, memberName }: { memberId: string; memberName: strin
       {/* Recommended Interventions */}
       {assessment.recommendedInterventions.length > 0 && (
         <div>
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+          <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
             Recommended Actions
           </h3>
           <div className="space-y-2">
@@ -405,7 +405,7 @@ function RiskTab({ memberId, memberName }: { memberId: string; memberName: strin
       {/* Intervention History */}
       {memberInterventions.length > 0 && (
         <div>
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+          <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
             Intervention History
           </h3>
           <div className="space-y-2">
@@ -453,7 +453,7 @@ function BillingTab({ memberId }: { memberId: string }) {
       {/* Current Subscription */}
       {subscription && (
         <div>
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+          <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
             Current Subscription
           </h3>
           <div className="rounded-lg border border-peec-border-light p-3">
@@ -477,7 +477,7 @@ function BillingTab({ memberId }: { memberId: string }) {
       {/* Payment Method */}
       {paymentMethod && (
         <div>
-          <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+          <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
             Payment Method
           </h3>
           <div className="flex items-center gap-3 rounded-lg border border-peec-border-light p-3">
@@ -496,7 +496,7 @@ function BillingTab({ memberId }: { memberId: string }) {
 
       {/* Recent Invoices */}
       <div>
-        <h3 className="mb-3 text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+        <h3 className="mb-3 text-xs font-medium text-peec-text-muted">
           Recent Invoices
         </h3>
         {invoices.length === 0 ? (
@@ -532,7 +532,7 @@ function BillingTab({ memberId }: { memberId: string }) {
 function CheckinsTab({ member }: { member: NonNullable<ReturnType<typeof useMemberById>> }) {
   return (
     <div className="space-y-4">
-      <h3 className="text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+      <h3 className="text-xs font-medium text-peec-text-muted">
         Check-in History
       </h3>
       {member.checkInHistory.length === 0 ? (
@@ -613,7 +613,7 @@ function NotesTab({ memberId }: { memberId: string }) {
       </div>
 
       {/* Notes List */}
-      <h3 className="text-xs font-semibold uppercase tracking-wider text-peec-text-muted">History</h3>
+      <h3 className="text-xs font-medium text-peec-text-muted">History</h3>
       {notes.length === 0 ? (
         <p className="text-xs text-peec-text-muted">No notes yet</p>
       ) : (

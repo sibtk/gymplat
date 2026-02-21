@@ -168,7 +168,7 @@ export function CopilotSpotlight({ open, onClose }: CopilotSpotlightProps) {
 
           {/* Spotlight modal */}
           <motion.div
-            className="fixed left-1/2 top-[15%] z-50 w-[90vw] max-w-2xl -translate-x-1/2"
+            className="fixed left-1/2 top-[15%] z-50 w-[90vw] max-w-2xl -translate-x-1/2 tablet:left-[calc(50%+7.5rem)]"
             initial={{ opacity: 0, y: -20, scale: 0.95 }}
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -20, scale: 0.95 }}

@@ -115,7 +115,7 @@ export function DataTable<T>({
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-4 py-3 text-left text-2xs font-medium uppercase tracking-wider text-peec-text-muted ${col.className ?? ""}`}
+                  className={`px-4 py-3 text-left text-2xs font-medium uppercase tracking-wide text-peec-text-muted/70 ${col.className ?? ""}`}
                 >
                   {col.label}
                 </th>

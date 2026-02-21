@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  ArrowRight,
   CheckCircle2,
   Clock,
   Gift,
@@ -13,6 +14,7 @@ import {
   XCircle,
   Zap,
 } from "lucide-react";
+import Link from "next/link";
 import { useMemo } from "react";
 
 import { CopilotActionQueue } from "@/components/dashboard/copilot-action-queue";
@@ -162,7 +164,7 @@ export default function RetentionIntelligencePage() {
             <div>
               <div className="flex items-center gap-2">
                 <Shield className="h-5 w-5 text-purple-500" />
-                <h1 className="text-xl font-bold text-peec-dark">
+                <h1 className="text-lg font-semibold text-peec-dark">
                   Retention Intelligence
                 </h1>
               </div>
@@ -179,17 +181,26 @@ export default function RetentionIntelligencePage() {
           </div>
         </StaggerItem>
 
-        {/* Action Queue */}
+        {/* Action Queue (compact) */}
         <StaggerItem>
           <div className="rounded-xl border border-peec-border-light bg-white p-5">
-            <CopilotActionQueue />
+            <div className="mb-3 flex items-center justify-between">
+              <h3 className="text-sm font-medium text-peec-dark">Action Queue</h3>
+              <Link
+                href={"/dashboard/action-queue" as string}
+                className="flex items-center gap-1 text-xs font-medium text-peec-dark hover:underline"
+              >
+                View All <ArrowRight className="h-3 w-3" />
+              </Link>
+            </div>
+            <CopilotActionQueue compact />
           </div>
         </StaggerItem>
 
         {/* At Risk This Week — with real engine data */}
         <StaggerItem>
           <div>
-            <h2 className="mb-3 text-sm font-semibold text-peec-dark">At Risk This Week</h2>
+            <h2 className="mb-3 text-sm font-medium text-peec-dark">At Risk This Week</h2>
             <div className="grid grid-cols-1 gap-4 tablet:grid-cols-2">
               {weeklyAtRisk.map((member) => {
                 const assessment = riskAssessments[member.id];
@@ -282,7 +293,7 @@ export default function RetentionIntelligencePage() {
         {/* Campaign Suggestions */}
         <StaggerItem>
           <div>
-            <h2 className="mb-3 text-sm font-semibold text-peec-dark">Campaign Suggestions</h2>
+            <h2 className="mb-3 text-sm font-medium text-peec-dark">Campaign Suggestions</h2>
             <div className="grid grid-cols-1 gap-4 tablet:grid-cols-3">
               {campaignSuggestions.map((campaign) => {
                 const Icon = campaignIcons[campaign.type] ?? Target;
@@ -293,7 +304,7 @@ export default function RetentionIntelligencePage() {
                       <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${colorClass}`}>
                         <Icon className="h-5 w-5" />
                       </div>
-                      <h3 className="mb-1 text-sm font-semibold text-peec-dark">{campaign.name}</h3>
+                      <h3 className="mb-1 text-sm font-medium text-peec-dark">{campaign.name}</h3>
                       <p className="mb-3 text-xs leading-relaxed text-peec-text-secondary">
                         {campaign.description}
                       </p>
@@ -343,7 +354,7 @@ export default function RetentionIntelligencePage() {
         {/* Intervention History */}
         <StaggerItem>
           <div className="rounded-xl border border-peec-border-light bg-white p-5">
-            <h3 className="mb-1 text-sm font-semibold text-peec-dark">Intervention History</h3>
+            <h3 className="mb-1 text-sm font-medium text-peec-dark">Intervention History</h3>
             <p className="mb-4 text-xs text-peec-text-muted">
               Real-time log of AI-driven and manual interventions
             </p>

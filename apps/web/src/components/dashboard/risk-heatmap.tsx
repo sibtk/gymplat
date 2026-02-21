@@ -64,7 +64,7 @@ export function RiskHeatmap() {
       <h3 className="mb-1 text-sm font-semibold text-peec-dark">Risk Heatmap</h3>
       <p className="mb-4 text-2xs text-peec-text-muted">Average risk by check-in time</p>
 
-      <div className="overflow-x-auto">
+      <div className="overflow-visible">
         <div className="min-w-[500px]">
           {/* Hour labels */}
           <div className="mb-1 flex pl-10">
@@ -76,6 +76,7 @@ export function RiskHeatmap() {
           </div>
 
           {/* Grid rows */}
+          <div className="space-y-[3px]">
           {DAYS.map((dayLabel, dayIdx) => (
             <div key={dayLabel} className="flex items-center gap-1">
               <span className="w-9 text-right text-2xs text-peec-text-muted">{dayLabel}</span>
@@ -118,6 +119,7 @@ export function RiskHeatmap() {
               </div>
             </div>
           ))}
+          </div>
         </div>
       </div>
 

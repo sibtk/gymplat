@@ -1,41 +1,41 @@
 "use client";
 
-import {
-  CalendarDays,
-  CreditCard,
-  Dumbbell,
-  FileBarChart,
-  LayoutDashboard,
-  ListChecks,
-  LogOut,
-  MessageSquare,
-  Settings,
-  Shield,
-  TrendingUp,
-  Users,
-  X,
-} from "lucide-react";
+import { X } from "lucide-react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 
 import { PulseDot } from "@/components/dashboard/motion";
+import {
+  IconCalendar,
+  IconChat,
+  IconChecklist,
+  IconDocument,
+  IconDumbbell,
+  IconGraphUp,
+  IconHome,
+  IconLogout,
+  IconMoney,
+  IconSettings,
+  IconShield,
+  IconUsers,
+} from "@/components/icons";
 import { logout } from "@/lib/auth";
 import { useGymStore } from "@/lib/store";
 
 const mainNav = [
-  { label: "Overview", href: "/dashboard", icon: LayoutDashboard },
-  { label: "Members", href: "/dashboard/members", icon: Users },
-  { label: "Analytics", href: "/dashboard/analytics", icon: TrendingUp },
-  { label: "Retention Intelligence", href: "/dashboard/insights", icon: Shield },
-  { label: "Action Queue", href: "/dashboard/action-queue", icon: ListChecks },
-  { label: "Payments", href: "/dashboard/payments", icon: CreditCard },
+  { label: "Overview", href: "/dashboard", icon: IconHome },
+  { label: "Members", href: "/dashboard/members", icon: IconUsers },
+  { label: "Analytics", href: "/dashboard/analytics", icon: IconGraphUp },
+  { label: "Retention Intelligence", href: "/dashboard/insights", icon: IconShield },
+  { label: "Action Queue", href: "/dashboard/action-queue", icon: IconChecklist },
+  { label: "Payments", href: "/dashboard/payments", icon: IconMoney },
 ] as const;
 
 const toolsNav = [
-  { label: "Classes", href: "/dashboard/classes", icon: CalendarDays },
-  { label: "Communication", href: "/dashboard/communication", icon: MessageSquare },
-  { label: "Reports", href: "/dashboard/reports", icon: FileBarChart },
-  { label: "Settings", href: "/dashboard/settings", icon: Settings },
+  { label: "Classes", href: "/dashboard/classes", icon: IconCalendar },
+  { label: "Communication", href: "/dashboard/communication", icon: IconChat },
+  { label: "Reports", href: "/dashboard/reports", icon: IconDocument },
+  { label: "Settings", href: "/dashboard/settings", icon: IconSettings },
 ] as const;
 
 interface SidebarProps {
@@ -78,7 +78,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
       <div className="flex h-16 items-center justify-between border-b border-peec-border-light px-5">
         <div className="flex items-center gap-2.5">
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-peec-dark">
-            <Dumbbell className="h-4 w-4 text-white" />
+            <IconDumbbell className="h-4 w-4 text-white" />
           </div>
           <span className="text-sm font-semibold text-peec-dark">GymPlatform</span>
         </div>
@@ -96,7 +96,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
       {/* Navigation */}
       <nav className="flex-1 overflow-y-auto px-3 py-4">
         {/* Main section */}
-        <p className="mb-2 px-3 text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
+        <p className="mb-2 px-3 text-2xs font-medium text-peec-text-muted/60">
           Main
         </p>
         <div className="flex flex-col gap-0.5">
@@ -115,7 +115,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
                   <PulseDot className="ml-auto" />
                 )}
                 {item.label === "Action Queue" && pendingActionCount > 0 && (
-                  <span className="ml-auto flex h-4 min-w-[16px] items-center justify-center rounded-full bg-amber-500 px-1 text-[9px] font-medium text-white">
+                  <span className="ml-auto flex h-4 min-w-[16px] items-center justify-center rounded-full bg-amber-500 px-1 text-2xs font-medium text-white">
                     {pendingActionCount}
                   </span>
                 )}
@@ -128,7 +128,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
         <div className="my-4 border-t border-peec-border-light" />
 
         {/* Tools section */}
-        <p className="mb-2 px-3 text-2xs font-medium uppercase tracking-wider text-peec-text-muted">
+        <p className="mb-2 px-3 text-2xs font-medium text-peec-text-muted/60">
           Tools
         </p>
         <div className="flex flex-col gap-0.5">
@@ -156,7 +156,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
           onClick={handleLogout}
           className="flex w-full items-center gap-2.5 rounded-lg px-3 py-2 text-sm text-peec-text-muted transition-colors hover:bg-stone-100 hover:text-peec-dark"
         >
-          <LogOut className="h-4 w-4" />
+          <IconLogout className="h-4 w-4" />
           Sign out
         </button>
       </div>

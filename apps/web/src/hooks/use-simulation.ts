@@ -14,6 +14,7 @@ export function useSimulation() {
   const addIntervention = useGymStore((s) => s.addIntervention);
   const addCopilotInsight = useGymStore((s) => s.addCopilotInsight);
   const updateMember = useGymStore((s) => s.updateMember);
+  const incrementCheckedIn = useGymStore((s) => s.incrementCheckedIn);
 
   const simulatorRef = useRef<ReturnType<typeof createSimulator> | null>(null);
   const speedRef = useRef(1);
@@ -22,6 +23,9 @@ export function useSimulation() {
     speed: speedRef.current,
     onWebhookEvent: (event) => {
       addWebhookEvent(event);
+      if (event.type === "check_in") {
+        incrementCheckedIn(1);
+      }
     },
     onIntervention: (intervention) => {
       addIntervention(intervention);
@@ -38,7 +42,7 @@ export function useSimulation() {
     },
     getMembers: () => useGymStore.getState().members,
     getAssessments: () => useGymStore.getState().riskAssessments,
-  }), [addWebhookEvent, addIntervention, addCopilotInsight, updateMember]);
+  }), [addWebhookEvent, addIntervention, addCopilotInsight, updateMember, incrementCheckedIn]);
 
   // Start/stop based on store state
   useEffect(() => {

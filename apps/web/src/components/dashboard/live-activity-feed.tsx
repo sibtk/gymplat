@@ -68,7 +68,7 @@ export function LiveActivityFeed({ initialEvents }: LiveActivityFeedProps) {
   return (
     <div className="rounded-xl border border-peec-border-light bg-white p-5">
       <div className="mb-4 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-peec-dark">Recent Activity</h3>
+        <h3 className="text-sm font-medium text-peec-dark">Recent Activity</h3>
         <span className="text-2xs text-peec-text-muted">
           Updated {secondsAgo}s ago
         </span>

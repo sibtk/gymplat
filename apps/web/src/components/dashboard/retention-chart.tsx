@@ -47,11 +47,11 @@ export function RetentionChart({ lines, months }: RetentionChartProps) {
   );
 
   return (
-    <div className="rounded-xl border border-peec-border-light bg-white p-5">
+    <div className="rounded-xl border border-peec-border-light bg-white p-5 shadow-[0_0_30px_rgba(34,197,94,0.1)]">
       <div className="mb-4 flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-peec-dark">Retention Trends</h3>
-          <p className="text-xs text-peec-text-muted">Member retention by plan type</p>
+          <h3 className="text-sm font-medium text-peec-dark">Retention Trends</h3>
+          <p className="mt-0.5 text-xs text-peec-text-muted">Member retention by plan type</p>
         </div>
         {/* Legend */}
         <div className="hidden flex-wrap gap-3 tablet:flex">

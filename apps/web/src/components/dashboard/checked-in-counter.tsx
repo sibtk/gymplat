@@ -28,7 +28,7 @@ export function CheckedInCounter() {
   }, [incrementCheckedIn]);
 
   return (
-    <div className="flex items-center gap-2 rounded-full border border-peec-border-light bg-white px-3 py-1.5 shadow-sm">
+    <div className="flex items-center gap-2 rounded-full border border-peec-border-light bg-white px-3 py-1.5 shadow-[0_0_20px_rgba(59,130,246,0.15)]">
       <PulseDot />
       <span className="text-xs text-peec-dark">
         <span className="font-semibold">

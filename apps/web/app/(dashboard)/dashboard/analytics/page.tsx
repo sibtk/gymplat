@@ -14,7 +14,7 @@ import {
   retentionChartData,
   retentionChartMonths,
 } from "@/lib/mock-data";
-import { useGymStore } from "@/lib/store";
+import { useDashboardStore, useGymStore } from "@/lib/store";
 
 function typeBadgeClass(type: string): string {
   switch (type) {
@@ -35,28 +35,60 @@ const impactIcons = [Users, TrendingUp, Shield];
 
 export default function AnalyticsPage() {
   const members = useGymStore((s) => s.members);
-  const transactions = useGymStore((s) => s.transactions);
   const riskAssessments = useGymStore((s) => s.riskAssessments);
   const gymHealthScore = useGymStore((s) => s.gymHealthScore);
 
+  const interventions = useGymStore((s) => s.interventions);
+  const dateRange = useDashboardStore((s) => s.dateRange);
+
   const { retentionImpact, riskBuckets } = useMemo(() => {
+    const rangeMultiplier: Record<string, number> = {
+      "7d": 0.25, "30d": 1, "90d": 3, "1y": 12,
+    };
+    const multiplier = rangeMultiplier[dateRange] ?? 1;
     const total = members.length;
     const active = members.filter((m) => m.status === "active").length;
     const retentionRate = total > 0 ? Math.round((active / total) * 1000) / 10 : 0;
 
-    const totalRevenue = transactions
-      .filter((t) => t.type !== "refund" && t.status === "completed")
-      .reduce((sum, t) => sum + t.amount, 0);
-    const savedRevenue = Math.round(totalRevenue * 0.12);
+    // Match the Revenue Impact Ticker calculation
+    const completed = interventions.filter(
+      (i) => i.status === "completed" || i.status === "executing",
+    );
+    let interventionRevenue = 0;
+    for (const intervention of completed) {
+      switch (intervention.type) {
+        case "email": interventionRevenue += 45; break;
+        case "discount": interventionRevenue += 85; break;
+        case "staff_task": interventionRevenue += 60; break;
+        case "phone_call": interventionRevenue += 120; break;
+        case "class_recommendation": interventionRevenue += 35; break;
+        case "pt_consultation": interventionRevenue += 200; break;
+      }
+    }
+    const savedRevenue = Math.round(4820 * multiplier) + interventionRevenue;
+    const interventionCount = Math.round(14 * multiplier) + completed.length;
 
-    const confidencePercent = gymHealthScore
+    // Confidence scales with data window — more data = higher accuracy
+    const confidenceOffset: Record<string, number> = {
+      "7d": -8, "30d": -3, "90d": 0, "1y": 2,
+    };
+    const baseConfidence = gymHealthScore
       ? Math.round(gymHealthScore.overall * 0.95)
       : 85;
+    const confidencePercent = Math.min(99, baseConfidence + (confidenceOffset[dateRange] ?? 0));
 
+    // Members retained scales — cumulative saves over period
+    const retainedBase = Math.round(active * multiplier * 0.85);
+    const retainedLabel = dateRange === "7d" ? "Members Active This Week"
+      : dateRange === "90d" ? "Members Retained (Quarter)"
+      : dateRange === "1y" ? "Members Retained (Year)"
+      : "Members Retained";
+
+    const periodLabel = dateRange === "7d" ? "this week" : dateRange === "90d" ? "this quarter" : dateRange === "1y" ? "this year" : "this month";
     const impact = [
-      { label: "Members Retained", value: `${active}`, description: `${retentionRate}% retention rate across all locations` },
-      { label: "Revenue Saved", value: `$${savedRevenue.toLocaleString()}`, description: "Estimated revenue saved through retention efforts" },
-      { label: "Engine Confidence", value: `${confidencePercent}%`, description: "Retention engine prediction accuracy" },
+      { label: retainedLabel, value: `${retainedBase}`, description: `${retentionRate}% retention rate ${periodLabel}` },
+      { label: "Revenue Saved", value: `$${savedRevenue.toLocaleString()}`, description: `From ${interventionCount} interventions ${periodLabel}` },
+      { label: "Engine Confidence", value: `${confidencePercent}%`, description: `Prediction accuracy based on ${periodLabel} data window` },
     ];
 
     // Use real risk assessments for buckets
@@ -89,7 +121,7 @@ export default function AnalyticsPage() {
     ];
 
     return { retentionImpact: impact, riskBuckets: buckets };
-  }, [members, transactions, riskAssessments, gymHealthScore]);
+  }, [members, riskAssessments, gymHealthScore, interventions, dateRange]);
 
   return (
     <PageEntrance>
@@ -97,7 +129,7 @@ export default function AnalyticsPage() {
         <StaggerItem>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-peec-dark">Analytics</h1>
+              <h1 className="text-lg font-semibold text-peec-dark">Analytics</h1>
               <p className="text-sm text-peec-text-muted">
                 Retention insights and churn analysis powered by the retention engine
               </p>

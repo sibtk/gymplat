@@ -44,7 +44,7 @@ export default function ReportsPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-peec-dark">Reports</h1>
+            <h1 className="text-lg font-semibold text-peec-dark">Reports</h1>
             <p className="text-sm text-peec-text-muted">Build custom reports with metrics, charts, and CSV export</p>
           </div>
           <button

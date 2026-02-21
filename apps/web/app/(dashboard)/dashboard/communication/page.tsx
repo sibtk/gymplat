@@ -125,7 +125,7 @@ export default function CommunicationPage() {
       <div className="space-y-6">
         <div className="flex items-center justify-between">
           <div>
-            <h1 className="text-xl font-bold text-peec-dark">Communication</h1>
+            <h1 className="text-lg font-semibold text-peec-dark">Communication</h1>
             <p className="text-sm text-peec-text-muted">Manage email templates, campaigns, and message history</p>
           </div>
         </div>

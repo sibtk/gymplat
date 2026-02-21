@@ -2,7 +2,7 @@
 
 import { AnimatePresence } from "framer-motion";
 import { AlertTriangle, Plus, Users } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 
 import { AddMemberWizard } from "@/components/dashboard/add-member-wizard";
 import { CopilotCard } from "@/components/dashboard/copilot-card";
@@ -10,9 +10,12 @@ import { DataTable } from "@/components/dashboard/data-table";
 import { MemberDetailDrawer } from "@/components/dashboard/member-detail-drawer";
 import { PageEntrance, StaggerItem } from "@/components/dashboard/motion";
 import { StatusBadge } from "@/components/dashboard/status-badge";
+import { useToast } from "@/components/dashboard/toast";
 import { useCopilotInsights } from "@/hooks/use-copilot-insights";
 import { useGymStore } from "@/lib/store";
+import { generateId } from "@/lib/utils";
 
+import type { CopilotInsight } from "@/lib/retention/types";
 import type { MemberFull } from "@/lib/types";
 
 function riskDot(score: number): string {
@@ -103,10 +106,57 @@ const filters = [
 export default function MembersPage() {
   const members = useGymStore((s) => s.members);
   const riskAssessments = useGymStore((s) => s.riskAssessments);
+  const addIntervention = useGymStore((s) => s.addIntervention);
+  const addActivityEvent = useGymStore((s) => s.addActivityEvent);
   const [selectedMemberId, setSelectedMemberId] = useState<string | null>(null);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [wizardOpen, setWizardOpen] = useState(false);
   const insights = useCopilotInsights("members");
+  const { toast } = useToast();
+
+  const handleInsightAction = useCallback(
+    (insight: CopilotInsight) => {
+      if (insight.actionType === "navigate" && insight.relatedMemberId) {
+        setSelectedMemberId(insight.relatedMemberId);
+        setDrawerOpen(true);
+        return;
+      }
+
+      if (insight.actionType === "dismiss") return;
+
+      // For email, discount, staff_task, phone_call, class_recommendation, pt_consultation
+      const memberName = insight.relatedMemberName ?? "Member";
+      const interventionType = insight.actionType ?? "email";
+
+      addIntervention({
+        id: generateId("int"),
+        memberId: insight.relatedMemberId ?? "",
+        memberName,
+        type: interventionType as Exclude<typeof interventionType, "navigate" | "dismiss">,
+        title: insight.title,
+        description: insight.description,
+        status: "recommended",
+        priority: insight.priority,
+        estimatedImpact: "Pending assessment",
+        actualOutcome: null,
+        createdAt: new Date().toISOString(),
+        executedAt: null,
+        completedAt: null,
+        assignedTo: null,
+      });
+
+      addActivityEvent({
+        id: generateId("act"),
+        type: "update",
+        description: `Intervention created: ${insight.title}`,
+        timestamp: new Date().toISOString(),
+        member: memberName,
+      });
+
+      toast(`Intervention created for ${memberName}`);
+    },
+    [addIntervention, addActivityEvent, toast],
+  );
 
   const handleRowClick = (member: MemberFull) => {
     setSelectedMemberId(member.id);
@@ -137,7 +187,7 @@ export default function MembersPage() {
         <StaggerItem>
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-xl font-bold text-peec-dark">Members</h1>
+              <h1 className="text-lg font-semibold text-peec-dark">Members</h1>
               <p className="text-sm text-peec-text-muted">
                 Manage and monitor all gym members
               </p>
@@ -168,11 +218,13 @@ export default function MembersPage() {
         {/* Copilot insights for members page */}
         {insights.length > 0 && (
           <StaggerItem>
-            <AnimatePresence>
-              {insights.slice(0, 2).map((insight) => (
-                <CopilotCard key={insight.id} insight={insight} />
-              ))}
-            </AnimatePresence>
+            <div className="space-y-3">
+              <AnimatePresence>
+                {insights.slice(0, 2).map((insight) => (
+                  <CopilotCard key={insight.id} insight={insight} onAction={handleInsightAction} />
+                ))}
+              </AnimatePresence>
+            </div>
           </StaggerItem>
         )}
 

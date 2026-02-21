@@ -101,7 +101,7 @@ export function Header({ onMenuToggle }: HeaderProps) {
               className="relative flex items-center gap-1.5 rounded-lg border border-peec-border-light p-1.5 text-peec-text-muted hover:bg-stone-100 hover:text-peec-dark"
             >
               <ListChecks className="h-4.5 w-4.5" />
-              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-[9px] font-medium text-white">
+              <span className="flex h-4 w-4 items-center justify-center rounded-full bg-amber-500 text-2xs font-medium text-white">
                 {pendingActions}
               </span>
             </Link>
@@ -116,7 +116,7 @@ export function Header({ onMenuToggle }: HeaderProps) {
             >
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
-                <span className="absolute right-1 top-1 flex h-4 w-4 items-center justify-center rounded-full bg-peec-red text-[9px] font-medium text-white">
+                <span className="absolute -right-0.5 -top-0.5 flex h-3.5 min-w-[14px] items-center justify-center rounded-full bg-peec-red px-0.5 text-[9px] font-medium leading-none text-white">
                   {unreadCount}
                 </span>
               )}

@@ -1,8 +1,8 @@
 "use client";
 
-import { motion, useSpring, useTransform } from "framer-motion";
-import { TrendingDown, TrendingUp, Minus } from "lucide-react";
-import { useEffect, useRef } from "react";
+import { AnimatePresence, motion, useSpring, useTransform } from "framer-motion";
+import { Info, TrendingDown, TrendingUp, Minus, X } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 
 import type { GymHealthScore } from "@/lib/retention/types";
 
@@ -34,8 +34,17 @@ const TrendIcon = ({ trend }: { trend: GymHealthScore["trend"] }) => {
   return <Minus className="h-3.5 w-3.5 text-peec-text-muted" />;
 };
 
+const componentDetails: Record<string, { full: string; description: string }> = {
+  Ret: { full: "Retention", description: "Percentage of members who remain active month-over-month. Higher scores indicate strong member loyalty and low churn." },
+  Rev: { full: "Revenue", description: "Revenue health based on MRR growth, average revenue per member, and payment collection rate." },
+  Eng: { full: "Engagement", description: "How actively members use the gym — check-in frequency, class attendance, and facility utilization." },
+  Grw: { full: "Growth", description: "Net member growth rate factoring in new sign-ups, reactivations, and cancellations." },
+};
+
 export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
   const { overall, components, trend } = healthScore;
+  const [open, setOpen] = useState(false);
+  const popupRef = useRef<HTMLDivElement>(null);
   const color = scoreColor(overall);
   const radius = 58;
   const circumference = 2 * Math.PI * radius;
@@ -53,6 +62,17 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
     springValue.set(overall);
   }, [springValue, overall]);
 
+  useEffect(() => {
+    if (!open) return;
+    const handleClick = (e: MouseEvent) => {
+      if (popupRef.current && !popupRef.current.contains(e.target as Node)) {
+        setOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClick);
+    return () => document.removeEventListener("mousedown", handleClick);
+  }, [open]);
+
   const quadrants = [
     { label: "Ret", value: components.retention },
     { label: "Rev", value: components.revenue },
@@ -65,16 +85,24 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`flex flex-col items-center gap-3 rounded-2xl border border-peec-border-light bg-white p-6 ${scoreGlowClass(overall)} transition-shadow duration-1000`}
+      className={`relative flex h-full flex-col items-center gap-3 rounded-2xl border border-peec-border-light bg-white p-6 transition-shadow duration-1000 ${scoreGlowClass(overall)} ${open ? "z-50" : ""}`}
     >
-      <p className="text-xs font-medium uppercase tracking-wider text-peec-text-muted">
-        Gym Health Score
-      </p>
+      <div className="flex w-full items-center justify-between">
+        <p className="text-xs font-medium tracking-wide text-peec-text-muted">
+          Gym Health Score
+        </p>
+        <button
+          type="button"
+          onClick={() => setOpen((v) => !v)}
+          className="rounded-full p-0.5 text-peec-text-muted/50 transition-colors hover:bg-stone-100 hover:text-peec-text-secondary"
+        >
+          <Info className="h-3.5 w-3.5" />
+        </button>
+      </div>
 
       {/* SVG Orb */}
       <div className="relative flex items-center justify-center">
         <svg width="148" height="148" viewBox="0 0 148 148">
-          {/* Background circle */}
           <circle
             cx="74"
             cy="74"
@@ -83,7 +111,6 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
             stroke="#e5e5e5"
             strokeWidth="8"
           />
-          {/* Animated progress arc */}
           <motion.circle
             cx="74"
             cy="74"
@@ -98,7 +125,6 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
           />
         </svg>
 
-        {/* Center content */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <motion.span
             ref={ref}
@@ -124,6 +150,52 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
           </div>
         ))}
       </div>
+
+      {/* Floating popup */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            ref={popupRef}
+            initial={{ opacity: 0, y: 4, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: 4, scale: 0.95 }}
+            transition={{ duration: 0.15 }}
+            className="absolute left-0 right-0 top-full z-50 mt-2 rounded-xl border border-peec-border-light bg-white p-4 shadow-lg"
+          >
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-xs font-medium text-peec-dark">Gym Health Score</p>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="rounded p-0.5 text-peec-text-muted hover:bg-stone-100"
+              >
+                <X className="h-3 w-3" />
+              </button>
+            </div>
+            <p className="mb-3 text-2xs leading-relaxed text-peec-text-secondary">
+              A composite score (0–100) measuring overall gym performance. Scores above 80 indicate a healthy business; below 60 needs attention.
+            </p>
+            <div className="space-y-2">
+              {quadrants.map((q) => {
+                const detail = componentDetails[q.label];
+                return (
+                  <div key={q.label} className="flex gap-2">
+                    <div className={`mt-0.5 h-2 w-2 shrink-0 rounded-full ${q.value >= 80 ? "bg-green-500" : q.value >= 60 ? "bg-amber-500" : "bg-red-500"}`} />
+                    <div>
+                      <p className="text-2xs font-medium text-peec-dark">
+                        {detail?.full ?? q.label}: {q.value}/100
+                      </p>
+                      <p className="text-2xs text-peec-text-muted">
+                        {detail?.description ?? ""}
+                      </p>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </motion.div>
   );
 }

@@ -1,31 +1,31 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import {
-  Check,
-  Clock,
-  Mail,
-  MessageSquare,
-  Phone,
-  Tag,
-  Target,
-  UserCheck,
-  X,
-} from "lucide-react";
+import { Check, Clock, X } from "lucide-react";
 import { useMemo, useState } from "react";
 
+import { ConfirmDialog } from "@/components/dashboard/confirm-dialog";
+import { InterventionPreview } from "@/components/dashboard/intervention-preview";
+import {
+  IconChat,
+  IconLetter,
+  IconPhoneCalling,
+  IconTagPrice,
+  IconTarget,
+  IconUserCheck,
+} from "@/components/icons";
 import { useGymStore } from "@/lib/store";
 import { generateId } from "@/lib/utils";
 
 import type { Intervention, InterventionType } from "@/lib/retention/types";
 
-const typeIcons: Record<InterventionType, typeof Mail> = {
-  email: Mail,
-  discount: Tag,
-  staff_task: UserCheck,
-  phone_call: Phone,
-  class_recommendation: Target,
-  pt_consultation: MessageSquare,
+const typeIcons: Record<InterventionType, typeof IconLetter> = {
+  email: IconLetter,
+  discount: IconTagPrice,
+  staff_task: IconUserCheck,
+  phone_call: IconPhoneCalling,
+  class_recommendation: IconTarget,
+  pt_consultation: IconChat,
 };
 
 const typeLabels: Record<InterventionType, string> = {
@@ -59,6 +59,8 @@ export function CopilotActionQueue({ compact }: CopilotActionQueueProps) {
   const addActivityEvent = useGymStore((s) => s.addActivityEvent);
   const [typeFilter, setTypeFilter] = useState<FilterType>("all");
   const [statusFilter, setStatusFilter] = useState<StatusFilter>("all");
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [selectedIntervention, setSelectedIntervention] = useState<Intervention | null>(null);
 
   // Also generate interventions from risk assessments if none exist
   const allInterventions = useMemo(() => {
@@ -141,7 +143,7 @@ export function CopilotActionQueue({ compact }: CopilotActionQueueProps) {
           {/* Header */}
           <div className="flex items-center justify-between">
             <div>
-              <h3 className="text-sm font-semibold text-peec-dark">Action Queue</h3>
+              <h3 className="text-sm font-medium text-peec-dark">Action Queue</h3>
               <p className="text-2xs text-peec-text-muted">
                 {allInterventions.filter((i) => i.status === "recommended").length} pending &middot; est. ${totalImpact.toLocaleString()} revenue impact
               </p>
@@ -235,7 +237,10 @@ export function CopilotActionQueue({ compact }: CopilotActionQueueProps) {
                     <div className="flex shrink-0 gap-1">
                       <button
                         type="button"
-                        onClick={() => handleApprove(intervention)}
+                        onClick={() => {
+                          setSelectedIntervention(intervention);
+                          setConfirmOpen(true);
+                        }}
                         className="rounded-lg bg-green-50 p-1.5 text-green-600 hover:bg-green-100"
                         title="Approve"
                       >
@@ -273,6 +278,26 @@ export function CopilotActionQueue({ compact }: CopilotActionQueueProps) {
           </p>
         )}
       </div>
+
+      <ConfirmDialog
+        open={confirmOpen}
+        onClose={() => {
+          setConfirmOpen(false);
+          setSelectedIntervention(null);
+        }}
+        onConfirm={() => {
+          if (selectedIntervention) handleApprove(selectedIntervention);
+          setSelectedIntervention(null);
+        }}
+        title="Execute Intervention"
+        description="Review what will happen before proceeding"
+        confirmLabel="Execute"
+        maxWidth="max-w-lg"
+      >
+        {selectedIntervention && (
+          <InterventionPreview intervention={selectedIntervention} />
+        )}
+      </ConfirmDialog>
     </div>
   );
 }

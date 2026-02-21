@@ -82,7 +82,7 @@ export function ClassDetailDrawer({ gymClass, open, onClose }: ClassDetailDrawer
               <div>
                 <div className="mb-3 flex items-center gap-2">
                   <Users className="h-4 w-4 text-peec-text-muted" />
-                  <h3 className="text-xs font-semibold uppercase tracking-wider text-peec-text-muted">
+                  <h3 className="text-xs font-medium text-peec-text-muted">
                     Bookings ({bookings.length})
                   </h3>
                 </div>

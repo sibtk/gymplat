@@ -13,6 +13,7 @@ interface ConfirmDialogProps {
   description: string;
   confirmLabel?: string;
   destructive?: boolean;
+  maxWidth?: string;
   children?: ReactNode;
 }
 
@@ -24,6 +25,7 @@ export function ConfirmDialog({
   description,
   confirmLabel = "Confirm",
   destructive = false,
+  maxWidth = "max-w-md",
   children,
 }: ConfirmDialogProps) {
   return (
@@ -44,7 +46,7 @@ export function ConfirmDialog({
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.15 }}
           >
-            <div className="w-full max-w-md rounded-xl border border-peec-border-light bg-white p-6 shadow-lg">
+            <div className={`w-full ${maxWidth} rounded-xl border border-peec-border-light bg-white p-6 shadow-lg`}>
               <div className="mb-4 flex items-start justify-between">
                 <div>
                   <h3 className="text-sm font-semibold text-peec-dark">{title}</h3>

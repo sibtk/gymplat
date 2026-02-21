@@ -79,7 +79,7 @@ export default function SettingsPage() {
     <PageEntrance>
       <div className="space-y-6">
         <div>
-          <h1 className="text-xl font-bold text-peec-dark">Settings</h1>
+          <h1 className="text-lg font-semibold text-peec-dark">Settings</h1>
           <p className="text-sm text-peec-text-muted">
             Manage your gym configuration
           </p>
@@ -153,7 +153,7 @@ function GeneralTab({ toast }: { toast: (msg: string) => void }) {
 
   return (
     <div className="rounded-xl border border-peec-border-light bg-white p-6">
-      <h3 className="mb-1 text-sm font-semibold text-peec-dark">Gym Information</h3>
+      <h3 className="mb-1 text-sm font-medium text-peec-dark">Gym Information</h3>
       <p className="mb-6 text-xs text-peec-text-muted">
         Update your gym&apos;s basic information
       </p>
@@ -237,7 +237,7 @@ function TeamTab({ toast }: { toast: (msg: string) => void }) {
     <div className="rounded-xl border border-peec-border-light bg-white p-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-peec-dark">Team Members</h3>
+          <h3 className="text-sm font-medium text-peec-dark">Team Members</h3>
           <p className="text-xs text-peec-text-muted">
             Manage staff access and roles
           </p>
@@ -329,7 +329,7 @@ function LocationsTab({ toast }: { toast: (msg: string) => void }) {
       <div className="rounded-xl border border-peec-border-light bg-white p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-peec-dark">Locations</h3>
+            <h3 className="text-sm font-medium text-peec-dark">Locations</h3>
             <p className="text-xs text-peec-text-muted">Manage your gym locations</p>
           </div>
           <button
@@ -469,7 +469,7 @@ function PlansTab({ toast }: { toast: (msg: string) => void }) {
       <div className="rounded-xl border border-peec-border-light bg-white p-6">
         <div className="mb-6 flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-peec-dark">Membership Plans</h3>
+            <h3 className="text-sm font-medium text-peec-dark">Membership Plans</h3>
             <p className="text-xs text-peec-text-muted">Configure membership plans and pricing</p>
           </div>
           <button
@@ -526,7 +526,7 @@ function PlansTab({ toast }: { toast: (msg: string) => void }) {
           {plans.map((plan) => (
             <div key={plan.id} className="rounded-xl border border-peec-border-light p-5">
               <div className="mb-3 flex items-center justify-between">
-                <h4 className="text-sm font-semibold text-peec-dark">{plan.name}</h4>
+                <h4 className="text-sm font-medium text-peec-dark">{plan.name}</h4>
                 <span className={`rounded-full px-2 py-0.5 text-2xs font-medium capitalize ${planTypeBadge[plan.type] ?? "bg-stone-100 text-stone-600"}`}>
                   {plan.type}
                 </span>
@@ -597,7 +597,7 @@ function NotificationsTab() {
 
   return (
     <div className="rounded-xl border border-peec-border-light bg-white p-6">
-      <h3 className="mb-1 text-sm font-semibold text-peec-dark">Notification Preferences</h3>
+      <h3 className="mb-1 text-sm font-medium text-peec-dark">Notification Preferences</h3>
       <p className="mb-6 text-xs text-peec-text-muted">
         Choose how you want to be notified
       </p>
@@ -661,7 +661,7 @@ function ApiTab({ toast }: { toast: (msg: string) => void }) {
     <div className="space-y-6">
       {/* API Key */}
       <div className="rounded-xl border border-peec-border-light bg-white p-6">
-        <h3 className="mb-1 text-sm font-semibold text-peec-dark">API Key</h3>
+        <h3 className="mb-1 text-sm font-medium text-peec-dark">API Key</h3>
         <p className="mb-4 text-xs text-peec-text-muted">
           Use this key to authenticate API requests
         </p>
@@ -700,7 +700,7 @@ function ApiTab({ toast }: { toast: (msg: string) => void }) {
 
       {/* Webhook URL */}
       <div className="rounded-xl border border-peec-border-light bg-white p-6">
-        <h3 className="mb-1 text-sm font-semibold text-peec-dark">Webhook URL</h3>
+        <h3 className="mb-1 text-sm font-medium text-peec-dark">Webhook URL</h3>
         <p className="mb-4 text-xs text-peec-text-muted">
           Stripe sends payment events to this endpoint
         </p>
@@ -764,7 +764,7 @@ function RetentionTab({ toast }: { toast: (msg: string) => void }) {
       <div className="rounded-xl border border-peec-border-light bg-white p-6">
         <div className="flex items-center justify-between">
           <div>
-            <h3 className="text-sm font-semibold text-peec-dark">Demo Mode</h3>
+            <h3 className="text-sm font-medium text-peec-dark">Demo Mode</h3>
             <p className="text-xs text-peec-text-muted">
               Simulate real-time events, score changes, and automated interventions
             </p>
@@ -797,7 +797,7 @@ function RetentionTab({ toast }: { toast: (msg: string) => void }) {
 
       {/* Developer Tools */}
       <div className="rounded-xl border border-amber-200 bg-amber-50/30 p-6">
-        <h3 className="mb-1 text-sm font-semibold text-peec-dark">Developer Tools</h3>
+        <h3 className="mb-1 text-sm font-medium text-peec-dark">Developer Tools</h3>
         <p className="mb-4 text-xs text-peec-text-muted">
           Debug utilities for development and testing
         </p>
@@ -829,7 +829,7 @@ function RetentionTab({ toast }: { toast: (msg: string) => void }) {
 
       {/* Automation Config */}
       <div className="rounded-xl border border-peec-border-light bg-white p-6">
-        <h3 className="mb-1 text-sm font-semibold text-peec-dark">Retention Automation</h3>
+        <h3 className="mb-1 text-sm font-medium text-peec-dark">Retention Automation</h3>
         <p className="mb-6 text-xs text-peec-text-muted">
           Configure how the retention engine handles interventions for each type
         </p>

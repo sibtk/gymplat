@@ -136,7 +136,7 @@ export default function PaymentsPage() {
     <PageEntrance>
       <div className="space-y-6">
         <div>
-          <h1 className="text-xl font-bold text-peec-dark">Payments</h1>
+          <h1 className="text-lg font-semibold text-peec-dark">Payments</h1>
           <p className="text-sm text-peec-text-muted">Revenue tracking and payment management</p>
         </div>
 
