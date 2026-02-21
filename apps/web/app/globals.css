@@ -183,3 +183,13 @@ html {
 .animate-insight-slide {
   animation: insight-slide 0.4s ease-out;
 }
+
+/* Trust strip marquee scroll */
+@keyframes marquee-scroll {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.marquee-track {
+  animation: marquee-scroll 20s linear infinite;
+}

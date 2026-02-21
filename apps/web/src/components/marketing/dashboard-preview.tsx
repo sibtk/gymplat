@@ -213,10 +213,10 @@ export function DashboardPreview() {
               <div className="hidden w-[200px] shrink-0 border-r border-peec-border-light bg-stone-50 p-4 tablet:block">
                 <div className="mb-4 flex items-center gap-2">
                   <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-peec-dark">
-                    <span className="text-xs font-bold text-white">G</span>
+                    <span className="text-xs font-bold text-white">L</span>
                   </div>
                   <span className="text-sm font-semibold text-peec-dark">
-                    GymPlatform
+                    Ledger
                   </span>
                 </div>
 

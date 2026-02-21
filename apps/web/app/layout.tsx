@@ -7,7 +7,7 @@ import "./globals.css";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "GymPlatform — Modern Gym Management",
+  title: "Ledger — Modern Gym Management",
   description:
     "Full-stack gym management and payment processing platform for 24-hour gyms, PT studios, and functional fitness facilities.",
 };

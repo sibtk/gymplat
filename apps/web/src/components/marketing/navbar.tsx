@@ -27,7 +27,7 @@ export function Navbar() {
           {/* Logo */}
           <a href="/" className="flex items-center gap-2 text-peec-dark">
             <Dumbbell className="h-6 w-6" />
-            <span className="text-lg font-semibold">GymPlatform</span>
+            <span className="text-lg font-semibold">Ledger</span>
           </a>
 
           {/* Desktop links */}

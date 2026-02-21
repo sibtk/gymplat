@@ -48,7 +48,7 @@ export default function LoginPage() {
           <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-peec-dark">
             <Dumbbell className="h-6 w-6 text-white" />
           </div>
-          <h1 className="text-xl font-bold text-peec-dark">GymPlatform</h1>
+          <h1 className="text-xl font-bold text-peec-dark">Ledger</h1>
           <p className="mt-1 text-sm text-peec-text-tertiary">
             Sign in to your dashboard
           </p>

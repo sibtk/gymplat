@@ -18,14 +18,14 @@ export function CtaSection() {
 
           <div className="relative">
             <h2 className="mb-4 text-3xl font-bold tracking-tight text-peec-dark tablet:text-5xl">
-              Find out how to grow your gym
+              Ready to reduce churn and grow revenue?
             </h2>
             <p className="mb-8 text-base text-peec-text-secondary">
-              Join 500+ gyms using AI-powered retention to reduce churn and grow revenue.
+              Join 500+ gyms using Ledger to retain more members with AI-powered insights.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 tablet:flex-row">
               <Button variant="cta" size="pill">
-                Start free trial
+                Start Free Trial
               </Button>
               <Button
                 variant="outlinePill"
@@ -35,6 +35,9 @@ export function CtaSection() {
                 Talk to Sales
               </Button>
             </div>
+            <p className="mt-5 text-sm text-peec-text-muted">
+              No credit card required &middot; 14-day free trial &middot; Cancel anytime
+            </p>
           </div>
         </div>
       </AnimationWrapper>

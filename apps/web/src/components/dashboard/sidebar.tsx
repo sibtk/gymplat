@@ -80,7 +80,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
           <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-peec-dark">
             <IconDumbbell className="h-4 w-4 text-white" />
           </div>
-          <span className="text-sm font-semibold text-peec-dark">GymPlatform</span>
+          <span className="text-sm font-semibold text-peec-dark">Ledger</span>
         </div>
         {mobile && onClose && (
           <button
