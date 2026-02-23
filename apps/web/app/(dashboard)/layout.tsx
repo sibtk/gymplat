@@ -53,7 +53,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
           {/* Main content */}
           <div className="flex flex-1 flex-col">
             <Header onMenuToggle={toggleSidebar} />
-            <main className="flex-1 overflow-auto p-4 tablet:p-6">
+            <main className="flex-1 overflow-auto p-3 tablet:p-5">
               {!hasHydrated ? (
                 <div className="flex h-64 items-center justify-center">
                   <div className="h-6 w-6 animate-spin rounded-full border-2 border-peec-dark border-t-transparent" />

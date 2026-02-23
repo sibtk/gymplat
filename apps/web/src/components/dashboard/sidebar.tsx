@@ -23,19 +23,19 @@ import { logout } from "@/lib/auth";
 import { useGymStore } from "@/lib/store";
 
 const mainNav = [
-  { label: "Overview", href: "/dashboard", icon: IconHome },
-  { label: "Members", href: "/dashboard/members", icon: IconUsers },
-  { label: "Analytics", href: "/dashboard/analytics", icon: IconGraphUp },
-  { label: "Retention Intelligence", href: "/dashboard/insights", icon: IconShield },
-  { label: "Action Queue", href: "/dashboard/action-queue", icon: IconChecklist },
-  { label: "Payments", href: "/dashboard/payments", icon: IconMoney },
+  { label: "Overview", href: "/dashboard", icon: IconHome, iconColor: "text-stone-500" },
+  { label: "Members", href: "/dashboard/members", icon: IconUsers, iconColor: "text-blue-500" },
+  { label: "Analytics", href: "/dashboard/analytics", icon: IconGraphUp, iconColor: "text-emerald-500" },
+  { label: "Retention Intelligence", href: "/dashboard/insights", icon: IconShield, iconColor: "text-rose-500" },
+  { label: "Action Queue", href: "/dashboard/action-queue", icon: IconChecklist, iconColor: "text-amber-500" },
+  { label: "Payments", href: "/dashboard/payments", icon: IconMoney, iconColor: "text-green-500" },
 ] as const;
 
 const toolsNav = [
-  { label: "Classes", href: "/dashboard/classes", icon: IconCalendar },
-  { label: "Communication", href: "/dashboard/communication", icon: IconChat },
-  { label: "Reports", href: "/dashboard/reports", icon: IconDocument },
-  { label: "Settings", href: "/dashboard/settings", icon: IconSettings },
+  { label: "Classes", href: "/dashboard/classes", icon: IconCalendar, iconColor: "text-violet-500" },
+  { label: "Communication", href: "/dashboard/communication", icon: IconChat, iconColor: "text-cyan-500" },
+  { label: "Reports", href: "/dashboard/reports", icon: IconDocument, iconColor: "text-stone-500" },
+  { label: "Settings", href: "/dashboard/settings", icon: IconSettings, iconColor: "text-stone-500" },
 ] as const;
 
 interface SidebarProps {
@@ -102,6 +102,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
         <div className="flex flex-col gap-0.5">
           {mainNav.map((item) => {
             const Icon = item.icon;
+            const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
@@ -109,7 +110,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
                 onClick={onClose}
                 className={linkClass(item.href)}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className={`h-4 w-4 ${active ? "" : item.iconColor}`} />
                 {item.label}
                 {item.label === "Overview" && !mobile && (
                   <PulseDot className="ml-auto" />
@@ -134,6 +135,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
         <div className="flex flex-col gap-0.5">
           {toolsNav.map((item) => {
             const Icon = item.icon;
+            const active = isActive(item.href);
             return (
               <Link
                 key={item.href}
@@ -141,7 +143,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
                 onClick={onClose}
                 className={linkClass(item.href)}
               >
-                <Icon className="h-4 w-4" />
+                <Icon className={`h-4 w-4 ${active ? "" : item.iconColor}`} />
                 {item.label}
               </Link>
             );

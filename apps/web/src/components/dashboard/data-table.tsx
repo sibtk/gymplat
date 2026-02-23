@@ -115,7 +115,7 @@ export function DataTable<T>({
               {columns.map((col) => (
                 <th
                   key={col.key}
-                  className={`px-4 py-3 text-left text-2xs font-medium uppercase tracking-wide text-peec-text-muted/70 ${col.className ?? ""}`}
+                  className={`px-4 py-2.5 text-left text-2xs font-medium uppercase tracking-wide text-peec-text-muted/70 ${col.className ?? ""}`}
                 >
                   {col.label}
                 </th>
@@ -140,7 +140,7 @@ export function DataTable<T>({
                   className={`border-b border-peec-border-light/50 transition-colors last:border-0 hover:bg-stone-50/50 ${onRowClick ? "cursor-pointer" : ""}`}
                 >
                   {columns.map((col) => (
-                    <td key={col.key} className={`px-4 py-3 ${col.className ?? ""}`}>
+                    <td key={col.key} className={`px-4 py-2.5 ${col.className ?? ""}`}>
                       {col.render(row)}
                     </td>
                   ))}

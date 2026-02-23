@@ -24,7 +24,7 @@ function activityIcon(type: ActivityEvent["type"]) {
     case "cancellation":
       return <UserMinus className="h-4 w-4 text-red-500" />;
     case "payment":
-      return <CreditCard className="h-4 w-4 text-purple-500" />;
+      return <CreditCard className="h-4 w-4 text-green-500" />;
     case "alert":
       return <AlertTriangle className="h-4 w-4 text-amber-500" />;
   }
@@ -66,7 +66,7 @@ export function LiveActivityFeed({ initialEvents }: LiveActivityFeedProps) {
   }, []);
 
   return (
-    <div className="rounded-xl border border-peec-border-light bg-white p-5">
+    <div className="rounded-xl border border-peec-border-light bg-white p-4">
       <div className="mb-4 flex items-center justify-between">
         <h3 className="text-sm font-medium text-peec-dark">Recent Activity</h3>
         <span className="text-2xs text-peec-text-muted">

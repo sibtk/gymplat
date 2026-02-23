@@ -41,7 +41,7 @@ export default function ReportsPage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-lg font-semibold text-peec-dark">Reports</h1>
@@ -56,7 +56,7 @@ export default function ReportsPage() {
           </button>
         </div>
 
-        <div className="flex gap-6">
+        <div className="flex gap-5">
           {/* Left Sidebar — Saved Reports + Metric Picker */}
           <AnimatePresence>
             {sidebarOpen && (

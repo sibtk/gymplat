@@ -178,7 +178,7 @@ export function CopilotSpotlight({ open, onClose }: CopilotSpotlightProps) {
               {/* Context line */}
               <div className="flex items-center justify-between border-b border-peec-border-light/50 px-4 py-2">
                 <div className="flex items-center gap-2">
-                  <Sparkles className="h-3.5 w-3.5 text-purple-500" />
+                  <Sparkles className="h-3.5 w-3.5 text-peec-dark" />
                   <span className="text-2xs text-peec-text-muted">
                     Viewing: <span className="capitalize">{copilotContext.page}</span>
                     {pendingCount > 0 && ` | ${pendingCount} actions pending`}
@@ -229,7 +229,7 @@ export function CopilotSpotlight({ open, onClose }: CopilotSpotlightProps) {
                 <div className="max-h-80 overflow-y-auto border-t border-peec-border-light/50 px-4 py-3">
                   {loading && !response && (
                     <div className="flex items-center gap-2">
-                      <div className="h-2 w-2 animate-pulse rounded-full bg-purple-400" />
+                      <div className="h-2 w-2 animate-pulse rounded-full bg-stone-400" />
                       <span className="text-xs text-peec-text-muted">Thinking...</span>
                     </div>
                   )}

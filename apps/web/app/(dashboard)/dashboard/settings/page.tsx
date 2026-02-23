@@ -77,7 +77,7 @@ export default function SettingsPage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div>
           <h1 className="text-lg font-semibold text-peec-dark">Settings</h1>
           <p className="text-sm text-peec-text-muted">
@@ -152,7 +152,7 @@ function GeneralTab({ toast }: { toast: (msg: string) => void }) {
   };
 
   return (
-    <div className="rounded-xl border border-peec-border-light bg-white p-6">
+    <div className="rounded-xl border border-peec-border-light bg-white p-5">
       <h3 className="mb-1 text-sm font-medium text-peec-dark">Gym Information</h3>
       <p className="mb-6 text-xs text-peec-text-muted">
         Update your gym&apos;s basic information
@@ -234,7 +234,7 @@ function TeamTab({ toast }: { toast: (msg: string) => void }) {
   const staff = useGymStore((s) => s.staffMembers);
 
   return (
-    <div className="rounded-xl border border-peec-border-light bg-white p-6">
+    <div className="rounded-xl border border-peec-border-light bg-white p-5">
       <div className="mb-6 flex items-center justify-between">
         <div>
           <h3 className="text-sm font-medium text-peec-dark">Team Members</h3>
@@ -326,7 +326,7 @@ function LocationsTab({ toast }: { toast: (msg: string) => void }) {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-peec-border-light bg-white p-6">
+      <div className="rounded-xl border border-peec-border-light bg-white p-5">
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-medium text-peec-dark">Locations</h3>
@@ -466,7 +466,7 @@ function PlansTab({ toast }: { toast: (msg: string) => void }) {
 
   return (
     <div className="space-y-4">
-      <div className="rounded-xl border border-peec-border-light bg-white p-6">
+      <div className="rounded-xl border border-peec-border-light bg-white p-5">
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h3 className="text-sm font-medium text-peec-dark">Membership Plans</h3>
@@ -596,7 +596,7 @@ function NotificationsTab() {
   };
 
   return (
-    <div className="rounded-xl border border-peec-border-light bg-white p-6">
+    <div className="rounded-xl border border-peec-border-light bg-white p-5">
       <h3 className="mb-1 text-sm font-medium text-peec-dark">Notification Preferences</h3>
       <p className="mb-6 text-xs text-peec-text-muted">
         Choose how you want to be notified
@@ -658,9 +658,9 @@ function ApiTab({ toast }: { toast: (msg: string) => void }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* API Key */}
-      <div className="rounded-xl border border-peec-border-light bg-white p-6">
+      <div className="rounded-xl border border-peec-border-light bg-white p-5">
         <h3 className="mb-1 text-sm font-medium text-peec-dark">API Key</h3>
         <p className="mb-4 text-xs text-peec-text-muted">
           Use this key to authenticate API requests
@@ -699,7 +699,7 @@ function ApiTab({ toast }: { toast: (msg: string) => void }) {
       </div>
 
       {/* Webhook URL */}
-      <div className="rounded-xl border border-peec-border-light bg-white p-6">
+      <div className="rounded-xl border border-peec-border-light bg-white p-5">
         <h3 className="mb-1 text-sm font-medium text-peec-dark">Webhook URL</h3>
         <p className="mb-4 text-xs text-peec-text-muted">
           Stripe sends payment events to this endpoint
@@ -759,9 +759,9 @@ function RetentionTab({ toast }: { toast: (msg: string) => void }) {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Demo Mode */}
-      <div className="rounded-xl border border-peec-border-light bg-white p-6">
+      <div className="rounded-xl border border-peec-border-light bg-white p-5">
         <div className="flex items-center justify-between">
           <div>
             <h3 className="text-sm font-medium text-peec-dark">Demo Mode</h3>
@@ -796,7 +796,7 @@ function RetentionTab({ toast }: { toast: (msg: string) => void }) {
       </div>
 
       {/* Developer Tools */}
-      <div className="rounded-xl border border-amber-200 bg-amber-50/30 p-6">
+      <div className="rounded-xl border border-amber-200 bg-amber-50/30 p-5">
         <h3 className="mb-1 text-sm font-medium text-peec-dark">Developer Tools</h3>
         <p className="mb-4 text-xs text-peec-text-muted">
           Debug utilities for development and testing
@@ -828,7 +828,7 @@ function RetentionTab({ toast }: { toast: (msg: string) => void }) {
       </div>
 
       {/* Automation Config */}
-      <div className="rounded-xl border border-peec-border-light bg-white p-6">
+      <div className="rounded-xl border border-peec-border-light bg-white p-5">
         <h3 className="mb-1 text-sm font-medium text-peec-dark">Retention Automation</h3>
         <p className="mb-6 text-xs text-peec-text-muted">
           Configure how the retention engine handles interventions for each type

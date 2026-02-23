@@ -146,7 +146,7 @@ export default function DashboardOverviewPage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* Stats banner */}
         <StaggerItem>
           <div className="flex flex-wrap items-center gap-3">
@@ -206,7 +206,7 @@ export default function DashboardOverviewPage() {
         )}
 
         {/* Charts + Sankey */}
-        <div className="grid grid-cols-1 gap-6 desktop:grid-cols-3">
+        <div className="grid grid-cols-1 gap-5 desktop:grid-cols-3">
           <StaggerItem className="desktop:col-span-2">
             <RetentionChart lines={retentionChartData} months={retentionChartMonths} />
           </StaggerItem>
@@ -218,7 +218,7 @@ export default function DashboardOverviewPage() {
 
         {/* At Risk Members with action buttons */}
         <StaggerItem>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
             <div className="mb-4 flex items-center justify-between">
               <div>
                 <h3 className="text-sm font-medium text-peec-dark">At-Risk Members</h3>

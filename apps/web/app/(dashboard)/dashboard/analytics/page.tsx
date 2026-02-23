@@ -32,6 +32,8 @@ function typeBadgeClass(type: string): string {
 }
 
 const impactIcons = [Users, TrendingUp, Shield];
+const impactBg = ["bg-green-50", "bg-blue-50", "bg-amber-50"];
+const impactFg = ["text-green-600", "text-blue-600", "text-amber-600"];
 
 export default function AnalyticsPage() {
   const members = useGymStore((s) => s.members);
@@ -125,7 +127,7 @@ export default function AnalyticsPage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <StaggerItem>
           <div className="flex items-center justify-between">
             <div>
@@ -135,9 +137,9 @@ export default function AnalyticsPage() {
               </p>
             </div>
             {gymHealthScore && (
-              <div className="flex items-center gap-2 rounded-lg border border-purple-200 bg-purple-50/50 px-3 py-1.5">
-                <Sparkles className="h-3.5 w-3.5 text-purple-500" />
-                <span className="text-xs text-purple-700">
+              <div className="flex items-center gap-2 rounded-lg border border-peec-border-light bg-stone-50 px-3 py-1.5">
+                <Sparkles className="h-3.5 w-3.5 text-peec-dark" />
+                <span className="text-xs text-peec-text-secondary">
                   Health: {gymHealthScore.overall}/100
                 </span>
               </div>
@@ -157,9 +159,9 @@ export default function AnalyticsPage() {
                 const suffix = match?.[3] ?? "";
                 return (
                   <CardHover key={item.label}>
-                    <div className="rounded-xl border border-peec-border-light bg-white p-5">
-                      <div className="mb-3 flex h-10 w-10 items-center justify-center rounded-lg bg-green-50">
-                        <Icon className="h-5 w-5 text-green-600" />
+                    <div className="rounded-xl border border-peec-border-light bg-white p-4">
+                      <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${impactBg[idx] as string}`}>
+                        <Icon className={`h-5 w-5 ${impactFg[idx] as string}`} />
                       </div>
                       <p className="text-2xl font-bold text-peec-dark">
                         <AnimatedNumber value={num} prefix={prefix} suffix={suffix} />
@@ -174,7 +176,7 @@ export default function AnalyticsPage() {
         </StaggerItem>
 
         {/* Heatmap + Sankey */}
-        <div className="grid grid-cols-1 gap-6 desktop:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 desktop:grid-cols-2">
           <StaggerItem>
             <RiskHeatmap />
           </StaggerItem>
@@ -190,7 +192,7 @@ export default function AnalyticsPage() {
 
         {/* Cohort Analysis */}
         <StaggerItem>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
               <h3 className="mb-1 text-sm font-semibold text-peec-dark">Cohort Analysis</h3>
               <p className="mb-4 text-xs text-peec-text-muted">Member retention by signup month</p>
               <div className="overflow-x-auto">
@@ -224,7 +226,7 @@ export default function AnalyticsPage() {
 
         {/* Risk Buckets */}
         <StaggerItem>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
             <h3 className="mb-1 text-sm font-semibold text-peec-dark">Churn Prediction Breakdown</h3>
             <p className="mb-4 text-xs text-peec-text-muted">Members categorized by engine-computed risk level</p>
             <div className="grid grid-cols-1 gap-4 tablet:grid-cols-3">
@@ -262,9 +264,9 @@ export default function AnalyticsPage() {
         </StaggerItem>
 
         {/* Plan + Location Comparison */}
-        <div className="grid grid-cols-1 gap-6 desktop:grid-cols-2">
+        <div className="grid grid-cols-1 gap-5 desktop:grid-cols-2">
           <StaggerItem>
-            <div className="rounded-xl border border-peec-border-light bg-white p-5">
+            <div className="rounded-xl border border-peec-border-light bg-white p-4">
               <h3 className="mb-1 text-sm font-semibold text-peec-dark">Plan Comparison</h3>
               <p className="mb-4 text-xs text-peec-text-muted">Retention by membership type</p>
               <table className="w-full">
@@ -297,7 +299,7 @@ export default function AnalyticsPage() {
           </StaggerItem>
 
           <StaggerItem>
-            <div className="rounded-xl border border-peec-border-light bg-white p-5">
+            <div className="rounded-xl border border-peec-border-light bg-white p-4">
               <h3 className="mb-1 text-sm font-semibold text-peec-dark">Location Comparison</h3>
               <p className="mb-4 text-xs text-peec-text-muted">Performance across gym locations</p>
               <table className="w-full">

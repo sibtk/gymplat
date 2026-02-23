@@ -78,11 +78,11 @@ export function Header({ onMenuToggle }: HeaderProps) {
           <button
             type="button"
             onClick={() => setCopilotOpen(true)}
-            className="hidden items-center gap-1.5 rounded-lg border border-purple-200 bg-purple-50/50 px-2.5 py-1.5 tablet:flex"
+            className="hidden items-center gap-1.5 rounded-lg border border-peec-border-light bg-stone-50 px-2.5 py-1.5 tablet:flex"
           >
-            <Sparkles className="h-3.5 w-3.5 text-purple-500" />
-            <span className="text-xs text-purple-700">AI</span>
-            <kbd className="ml-1 rounded border border-purple-200 bg-white px-1.5 py-0.5 text-2xs text-purple-400">
+            <Sparkles className="h-3.5 w-3.5 text-peec-dark" />
+            <span className="text-xs text-peec-dark">AI</span>
+            <kbd className="ml-1 rounded border border-peec-border-light bg-white px-1.5 py-0.5 text-2xs text-peec-text-muted">
               ⌘J
             </kbd>
           </button>
@@ -116,7 +116,7 @@ export function Header({ onMenuToggle }: HeaderProps) {
             >
               <Bell className="h-5 w-5" />
               {unreadCount > 0 && (
-                <span className="absolute -right-0.5 -top-0.5 flex h-3.5 min-w-[14px] items-center justify-center rounded-full bg-peec-red px-0.5 text-[9px] font-medium leading-none text-white">
+                <span className="absolute -right-0.5 -top-0.5 flex h-3.5 min-w-[14px] items-center justify-center rounded-full bg-red-500 px-0.5 text-[9px] font-medium leading-none text-white">
                   {unreadCount}
                 </span>
               )}

@@ -122,7 +122,7 @@ export default function CommunicationPage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-lg font-semibold text-peec-dark">Communication</h1>
@@ -157,7 +157,7 @@ export default function CommunicationPage() {
                 </div>
                 <div className="grid grid-cols-1 gap-4 tablet:grid-cols-2 desktop:grid-cols-3">
                   {templates.map((tmpl) => (
-                    <div key={tmpl.id} className="rounded-xl border border-peec-border-light bg-white p-5">
+                    <div key={tmpl.id} className="rounded-xl border border-peec-border-light bg-white p-4">
                       <div className="mb-2 flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <Mail className="h-4 w-4 text-peec-text-muted" />

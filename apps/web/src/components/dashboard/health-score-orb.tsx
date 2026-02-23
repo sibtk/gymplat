@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion, useSpring, useTransform } from "framer-motion";
+import { AnimatePresence, motion, useMotionTemplate, useSpring, useTransform } from "framer-motion";
 import { Info, TrendingDown, TrendingUp, Minus, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
@@ -10,22 +10,10 @@ interface HealthScoreOrbProps {
   healthScore: GymHealthScore;
 }
 
-function scoreColor(score: number): string {
-  if (score >= 80) return "#22c55e";
-  if (score >= 60) return "#f59e0b";
-  return "#ef4444";
-}
-
 function scoreColorClass(score: number): string {
   if (score >= 80) return "text-green-500";
   if (score >= 60) return "text-amber-500";
   return "text-red-500";
-}
-
-function scoreGlowClass(score: number): string {
-  if (score >= 80) return "shadow-[0_0_40px_rgba(34,197,94,0.3)]";
-  if (score >= 60) return "shadow-[0_0_40px_rgba(245,158,11,0.3)]";
-  return "shadow-[0_0_40px_rgba(239,68,68,0.3)]";
 }
 
 const TrendIcon = ({ trend }: { trend: GymHealthScore["trend"] }) => {
@@ -45,16 +33,26 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
   const { overall, components, trend } = healthScore;
   const [open, setOpen] = useState(false);
   const popupRef = useRef<HTMLDivElement>(null);
-  const color = scoreColor(overall);
   const radius = 58;
   const circumference = 2 * Math.PI * radius;
 
-  const springValue = useSpring(0, { duration: 1200, bounce: 0.15 });
-  const dashOffset = useTransform(
-    springValue,
-    (v: number) => circumference - (v / 100) * circumference,
-  );
+  const springValue = useSpring(0, { duration: 1800, bounce: 0 });
   const displayNumber = useTransform(springValue, (v: number) => Math.round(v));
+
+  // Color transitions: red → orange → yellow → green
+  const strokeColor = useTransform(
+    springValue,
+    [0, 58, 62, 73, 77, 83, 87, 100],
+    ["#ef4444", "#ef4444", "#f97316", "#f97316", "#eab308", "#eab308", "#22c55e", "#22c55e"],
+  );
+
+  // Arc length via motion template
+  const filledLen = useTransform(springValue, (v: number) => circumference * (v / 100));
+  const gapLen = useTransform(springValue, (v: number) => circumference * (1 - v / 100));
+  const dashArray = useMotionTemplate`${filledLen} ${gapLen}`;
+
+  // Glow fades in at green zone
+  const glowOpacity = useTransform(springValue, [0, 75, 100], [0, 0, 0.25]);
 
   const ref = useRef<HTMLSpanElement>(null);
 
@@ -85,7 +83,7 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
-      className={`relative flex h-full flex-col items-center gap-3 rounded-2xl border border-peec-border-light bg-white p-6 transition-shadow duration-1000 ${scoreGlowClass(overall)} ${open ? "z-50" : ""}`}
+      className={`relative flex h-full flex-col items-center gap-3 rounded-2xl border border-peec-border-light bg-white p-5 ${open ? "z-50" : ""}`}
     >
       <div className="flex w-full items-center justify-between">
         <p className="text-xs font-medium tracking-wide text-peec-text-muted">
@@ -102,7 +100,16 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
 
       {/* SVG Orb */}
       <div className="relative flex items-center justify-center">
-        <svg width="148" height="148" viewBox="0 0 148 148">
+        {/* Animated glow */}
+        <motion.div
+          className="absolute inset-[-16px] rounded-full"
+          style={{
+            opacity: glowOpacity,
+            background: "radial-gradient(circle, rgba(34,197,94,0.3) 0%, rgba(34,197,94,0.08) 50%, transparent 70%)",
+          }}
+        />
+
+        <svg width="148" height="148" viewBox="0 0 148 148" className="-rotate-90">
           <circle
             cx="74"
             cy="74"
@@ -116,12 +123,9 @@ export function HealthScoreOrb({ healthScore }: HealthScoreOrbProps) {
             cy="74"
             r={radius}
             fill="none"
-            stroke={color}
             strokeWidth="8"
             strokeLinecap="round"
-            strokeDasharray={circumference}
-            style={{ strokeDashoffset: dashOffset }}
-            transform="rotate(-90 74 74)"
+            style={{ stroke: strokeColor, strokeDasharray: dashArray }}
           />
         </svg>
 

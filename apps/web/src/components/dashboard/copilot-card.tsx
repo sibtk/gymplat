@@ -54,7 +54,7 @@ export function CopilotCard({ insight, onAction }: CopilotCardProps) {
       animate={{ opacity: 1, x: 0 }}
       exit={{ opacity: 0, x: 20 }}
       transition={{ duration: 0.3 }}
-      className="group relative rounded-xl border border-purple-100 bg-gradient-to-r from-white to-purple-50/30 p-3.5"
+      className="group relative rounded-xl border border-peec-border-light bg-gradient-to-r from-white to-stone-50/30 p-3.5"
     >
       <button
         type="button"

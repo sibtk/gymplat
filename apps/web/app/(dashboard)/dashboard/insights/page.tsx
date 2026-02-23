@@ -157,13 +157,13 @@ export default function RetentionIntelligencePage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         {/* Header */}
         <StaggerItem>
           <div className="flex items-center justify-between">
             <div>
               <div className="flex items-center gap-2">
-                <Shield className="h-5 w-5 text-purple-500" />
+                <Shield className="h-5 w-5 text-emerald-500" />
                 <h1 className="text-lg font-semibold text-peec-dark">
                   Retention Intelligence
                 </h1>
@@ -172,9 +172,9 @@ export default function RetentionIntelligencePage() {
                 AI-powered retention engine with real-time risk scoring
               </p>
             </div>
-            <div className="flex items-center gap-2 rounded-lg border border-purple-200 bg-purple-50/50 px-3 py-1.5">
-              <Sparkles className="h-3.5 w-3.5 text-purple-500" />
-              <span className="text-xs text-purple-700">
+            <div className="flex items-center gap-2 rounded-lg border border-peec-border-light bg-stone-50 px-3 py-1.5">
+              <Sparkles className="h-3.5 w-3.5 text-peec-dark" />
+              <span className="text-xs text-peec-text-secondary">
                 Engine confidence: {confidencePercent}%
               </span>
             </div>
@@ -183,7 +183,7 @@ export default function RetentionIntelligencePage() {
 
         {/* Action Queue (compact) */}
         <StaggerItem>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
             <div className="mb-3 flex items-center justify-between">
               <h3 className="text-sm font-medium text-peec-dark">Action Queue</h3>
               <Link
@@ -206,7 +206,7 @@ export default function RetentionIntelligencePage() {
                 const assessment = riskAssessments[member.id];
                 return (
                   <CardHover key={member.id}>
-                    <div className="rounded-xl border border-peec-border-light bg-white p-5">
+                    <div className="rounded-xl border border-peec-border-light bg-white p-4">
                       <div className="mb-3 flex items-center justify-between">
                         <div className="flex items-center gap-3">
                           <div className="flex h-10 w-10 items-center justify-center rounded-full bg-stone-100 text-xs font-medium text-peec-dark">
@@ -300,7 +300,7 @@ export default function RetentionIntelligencePage() {
                 const colorClass = campaignColors[campaign.type] ?? "bg-stone-50 text-stone-600";
                 return (
                   <CardHover key={campaign.id}>
-                    <div className="rounded-xl border border-peec-border-light bg-white p-5">
+                    <div className="rounded-xl border border-peec-border-light bg-white p-4">
                       <div className={`mb-3 flex h-10 w-10 items-center justify-center rounded-lg ${colorClass}`}>
                         <Icon className="h-5 w-5" />
                       </div>
@@ -353,7 +353,7 @@ export default function RetentionIntelligencePage() {
 
         {/* Intervention History */}
         <StaggerItem>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
             <h3 className="mb-1 text-sm font-medium text-peec-dark">Intervention History</h3>
             <p className="mb-4 text-xs text-peec-text-muted">
               Real-time log of AI-driven and manual interventions
@@ -411,10 +411,10 @@ export default function RetentionIntelligencePage() {
 
         {/* Copilot hint */}
         <StaggerItem>
-          <div className="flex items-center justify-center gap-2 rounded-xl border border-purple-200 bg-purple-50/30 py-3">
-            <Sparkles className="h-4 w-4 text-purple-500" />
-            <span className="text-xs text-purple-700">
-              Press <kbd className="rounded border border-purple-200 bg-white px-1.5 py-0.5 text-2xs">⌘J</kbd> to open the AI Copilot for deeper analysis
+          <div className="flex items-center justify-center gap-2 rounded-xl border border-peec-border-light bg-stone-50/30 py-3">
+            <Sparkles className="h-4 w-4 text-peec-dark" />
+            <span className="text-xs text-peec-text-secondary">
+              Press <kbd className="rounded border border-peec-border-light bg-white px-1.5 py-0.5 text-2xs">⌘J</kbd> to open the AI Copilot for deeper analysis
             </span>
           </div>
         </StaggerItem>

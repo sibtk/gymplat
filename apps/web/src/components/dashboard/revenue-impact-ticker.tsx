@@ -112,7 +112,7 @@ export function RevenueImpactTicker() {
       initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.2 }}
-      className={`relative flex h-full flex-col items-center justify-center gap-2 rounded-2xl border border-peec-border-light bg-white p-6 shadow-[0_0_40px_rgba(34,197,94,0.3)] transition-shadow duration-1000 ${open ? "z-50" : ""}`}
+      className={`relative flex h-full flex-col items-center justify-center gap-2 rounded-2xl border border-peec-border-light bg-white p-5 shadow-[0_0_40px_rgba(34,197,94,0.3)] transition-shadow duration-1000 ${open ? "z-50" : ""}`}
     >
       {/* Background watermark icon */}
       <div className="pointer-events-none absolute inset-0 flex items-center justify-center overflow-hidden rounded-2xl">

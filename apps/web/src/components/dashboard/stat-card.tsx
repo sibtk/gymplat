@@ -46,7 +46,7 @@ export function StatCard({ stat, explanation }: StatCardProps) {
 
   return (
     <CardHover className={open ? "relative z-50" : ""}>
-      <div className="relative rounded-xl border border-peec-border-light bg-white p-5">
+      <div className="relative rounded-xl border border-peec-border-light bg-white p-4">
         <div className="flex items-center justify-between">
           <p className="mb-1.5 text-xs text-peec-text-muted">{stat.label}</p>
           {explanation && (

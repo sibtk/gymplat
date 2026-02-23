@@ -134,7 +134,7 @@ export default function PaymentsPage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div>
           <h1 className="text-lg font-semibold text-peec-dark">Payments</h1>
           <p className="text-sm text-peec-text-muted">Revenue tracking and payment management</p>
@@ -249,11 +249,11 @@ function OverviewTab({
   transactions: TransactionFull[];
 }) {
   return (
-    <div className="space-y-6">
+    <div className="space-y-5">
       {/* Revenue KPIs */}
       <div className="grid grid-cols-1 gap-4 tablet:grid-cols-3">
         <CardHover>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
             <p className="mb-1 text-xs text-peec-text-muted">Monthly Recurring Revenue</p>
             <p className="text-2xl font-bold text-peec-dark">
               <AnimatedNumber value={127400} prefix="$" />
@@ -262,7 +262,7 @@ function OverviewTab({
           </div>
         </CardHover>
         <CardHover>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
             <p className="mb-1 text-xs text-peec-text-muted">Annual Run Rate</p>
             <p className="text-2xl font-bold text-peec-dark">
               <AnimatedNumber value={1528800} prefix="$" />
@@ -271,7 +271,7 @@ function OverviewTab({
           </div>
         </CardHover>
         <CardHover>
-          <div className="rounded-xl border border-peec-border-light bg-white p-5">
+          <div className="rounded-xl border border-peec-border-light bg-white p-4">
             <p className="mb-1 text-xs text-peec-text-muted">Avg Revenue / Member</p>
             <p className="text-2xl font-bold text-peec-dark">
               $<AnimatedNumber value={44.76} />
@@ -285,8 +285,8 @@ function OverviewTab({
       <RevenueChart data={revenueData} />
 
       {/* Payment Methods + Failed Payments */}
-      <div className="grid grid-cols-1 gap-6 desktop:grid-cols-2">
-        <div className="rounded-xl border border-peec-border-light bg-white p-5">
+      <div className="grid grid-cols-1 gap-5 desktop:grid-cols-2">
+        <div className="rounded-xl border border-peec-border-light bg-white p-4">
           <h3 className="mb-1 text-sm font-semibold text-peec-dark">Payment Methods</h3>
           <p className="mb-4 text-xs text-peec-text-muted">Distribution by payment type</p>
           <div className="space-y-4">
@@ -304,7 +304,7 @@ function OverviewTab({
           </div>
         </div>
 
-        <div className="rounded-xl border border-red-200 bg-red-50/30 p-5">
+        <div className="rounded-xl border border-red-200 bg-red-50/30 p-4">
           <div className="mb-4 flex items-center gap-2">
             <AlertTriangle className="h-4 w-4 text-red-500" />
             <h3 className="text-sm font-semibold text-peec-dark">Failed Payments</h3>

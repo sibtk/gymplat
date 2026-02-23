@@ -76,7 +76,7 @@ export default function ClassesPage() {
 
   return (
     <PageEntrance>
-      <div className="space-y-6">
+      <div className="space-y-5">
         <div className="flex items-center justify-between">
           <div>
             <h1 className="text-lg font-semibold text-peec-dark">Classes</h1>
