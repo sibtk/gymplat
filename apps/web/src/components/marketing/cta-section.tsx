@@ -21,7 +21,7 @@ export function CtaSection() {
               Ready to reduce churn and grow revenue?
             </h2>
             <p className="mb-8 text-base text-peec-text-secondary">
-              Join 500+ gyms using Ledger to retain more members with AI-powered insights.
+              Join 500+ gyms using LDGR to retain more members with AI-powered insights.
             </p>
             <div className="flex flex-col items-center justify-center gap-4 tablet:flex-row">
               <Button variant="cta" size="pill">

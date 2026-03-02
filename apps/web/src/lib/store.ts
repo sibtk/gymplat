@@ -51,7 +51,7 @@ export interface Notification {
 
 // ─── Store Interface ────────────────────────────────────────────
 
-interface LedgerStore {
+interface LDGRStore {
   // ── Hydration ──
   _hasHydrated: boolean;
   setHasHydrated: (v: boolean) => void;
@@ -213,7 +213,7 @@ export interface SeedData {
 
 // ─── Store Implementation ───────────────────────────────────────
 
-export const useGymStore = create<LedgerStore>()(
+export const useGymStore = create<LDGRStore>()(
   persist(
     (set, get) => ({
       // ── Hydration ──

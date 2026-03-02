@@ -10,7 +10,7 @@ const testimonials = [
     name: "Sarah Chen",
     role: "Owner, Iron Temple Fitness",
     quote:
-      "Ledger shows exactly how your gym is performing in real time with AI-driven insights we never had before.",
+      "LDGR shows exactly how your gym is performing in real time with AI-driven insights we never had before.",
     initials: "SC",
     color: "bg-blue-100 text-blue-700",
     metric: "+16% retention",
