@@ -118,7 +118,7 @@ export function FranchiseSection() {
           </h2>
           <p className="mb-6 text-base leading-relaxed text-peec-text-secondary">
             Running a franchise shouldn&apos;t mean manual accounting, cutting checks, and chasing
-            down location reports. Ledger automates everything — revenue splits, royalty billing,
+            down location reports. LDGR automates everything — revenue splits, royalty billing,
             consolidated reporting — so you can focus on growing, not bookkeeping.
           </p>
           <div className="flex flex-wrap gap-3">

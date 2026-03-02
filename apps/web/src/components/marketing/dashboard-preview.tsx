@@ -216,7 +216,7 @@ export function DashboardPreview() {
                     <span className="text-xs font-bold text-white">L</span>
                   </div>
                   <span className="text-sm font-semibold text-peec-dark">
-                    Ledger
+                    LDGR
                   </span>
                 </div>
 

@@ -34,7 +34,7 @@ export function Hero() {
 
         <BlurFadeIn delay={0.2}>
           <p className="mx-auto mb-10 max-w-2xl text-lg text-peec-text-secondary">
-            Ledger is the AI-powered gym management platform that predicts member churn
+            LDGR is the AI-powered gym management platform that predicts member churn
             weeks before cancellation — and gives you the{" "}
             <span className="font-medium text-peec-dark">tools to prevent it</span>.
           </p>

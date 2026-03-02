@@ -16,7 +16,7 @@ const faqs = [
   {
     question: "Do I need to change my payment processor?",
     answer:
-      "No. Ledger integrates directly with Stripe. If you're not on Stripe yet, we'll help you set up an account \u2014 it takes about 15 minutes.",
+      "No. LDGR integrates directly with Stripe. If you're not on Stripe yet, we'll help you set up an account \u2014 it takes about 15 minutes.",
   },
   {
     question: "How does the AI churn prediction work?",
@@ -24,7 +24,7 @@ const faqs = [
       "Our models analyze check-in frequency, payment history, class attendance, and engagement patterns to generate a risk score for each member. High-risk members get flagged with recommended interventions you can approve with one click.",
   },
   {
-    question: "Can I use Ledger for multiple locations?",
+    question: "Can I use LDGR for multiple locations?",
     answer:
       "Yes. Pro supports up to 5 locations with unified reporting. Enterprise supports unlimited locations with automated franchise billing and consolidated dashboards.",
   },
@@ -36,7 +36,7 @@ const faqs = [
   {
     question: "What are the payment processing fees?",
     answer:
-      "Ledger charges just 0.8% of each transaction total on top of standard Stripe processing fees (2.9% + 30\u00A2). For example, on a $100 membership payment, Ledger\u2019s fee is only 80 cents. No hidden fees, no monthly minimums.",
+      "LDGR charges just 0.8% of each transaction total on top of standard Stripe processing fees (2.9% + 30\u00A2). For example, on a $100 membership payment, LDGR\u2019s fee is only 80 cents. No hidden fees, no monthly minimums.",
   },
   {
     question: "Is there a contract or commitment?",
