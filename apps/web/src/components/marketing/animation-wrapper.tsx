@@ -4,37 +4,7 @@ import { motion } from "framer-motion";
 
 import type { ReactNode } from "react";
 
-export function AnimationWrapper({
-  children,
-  className,
-  delay = 0,
-  direction = "up",
-}: {
-  children: ReactNode;
-  className?: string;
-  delay?: number;
-  direction?: "up" | "down" | "left" | "right" | "none";
-}) {
-  const directionMap = {
-    up: { y: 24 },
-    down: { y: -24 },
-    left: { x: 24 },
-    right: { x: -24 },
-    none: {},
-  };
-
-  return (
-    <motion.div
-      initial={{ opacity: 0, ...directionMap[direction] }}
-      whileInView={{ opacity: 1, x: 0, y: 0 }}
-      viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.6, delay, ease: [0.25, 0.1, 0.25, 1] }}
-      className={className}
-    >
-      {children}
-    </motion.div>
-  );
-}
+const ease = [0.25, 0.1, 0.25, 1] as const;
 
 export function FadeIn({
   children,
@@ -47,9 +17,9 @@ export function FadeIn({
 }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 16 }}
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 0.4, delay, ease }}
       className={className}
     >
       {children}
@@ -57,25 +27,21 @@ export function FadeIn({
   );
 }
 
-export function BlurFadeIn({
+export function ScrollFadeIn({
   children,
   className,
   delay = 0,
-  direction = "up",
 }: {
   children: ReactNode;
   className?: string;
   delay?: number;
-  direction?: "up" | "down" | "none";
 }) {
-  const yOffset = direction === "up" ? 24 : direction === "down" ? -24 : 0;
-
   return (
     <motion.div
-      initial={{ opacity: 0, y: yOffset, filter: "blur(8px)" }}
-      whileInView={{ opacity: 1, y: 0, filter: "blur(0px)" }}
+      initial={{ opacity: 0, y: 16 }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-60px" }}
-      transition={{ duration: 0.7, delay, ease: [0.25, 0.1, 0.25, 1] }}
+      transition={{ duration: 0.4, delay, ease }}
       className={className}
     >
       {children}
@@ -86,11 +52,9 @@ export function BlurFadeIn({
 export function StaggerContainer({
   children,
   className,
-  staggerDelay = 0.1,
 }: {
   children: ReactNode;
   className?: string;
-  staggerDelay?: number;
 }) {
   return (
     <motion.div
@@ -100,7 +64,7 @@ export function StaggerContainer({
       variants={{
         visible: {
           transition: {
-            staggerChildren: staggerDelay,
+            staggerChildren: 0.06,
           },
         },
       }}
@@ -121,8 +85,8 @@ export function StaggerItem({
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y: 20 },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: [0.25, 0.1, 0.25, 1] } },
+        hidden: { opacity: 0, y: 12 },
+        visible: { opacity: 1, y: 0, transition: { duration: 0.35, ease } },
       }}
       className={className}
     >

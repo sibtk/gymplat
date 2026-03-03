@@ -11,7 +11,7 @@ import {
 } from "lucide-react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
-import { AnimationWrapper } from "./animation-wrapper";
+import { ScrollFadeIn } from "./animation-wrapper";
 
 // --- DATA ---
 
@@ -25,11 +25,11 @@ const sidebarPages = [
 ];
 
 const chartLines = [
-  { label: "24/7 Access", color: "#171717", values: [65, 68, 70, 72, 75, 78] },
-  { label: "Premium", color: "#3b82f6", values: [72, 73, 71, 74, 76, 80] },
-  { label: "PT Package", color: "#22c55e", values: [85, 82, 83, 86, 88, 92] },
-  { label: "Student", color: "#f59e0b", values: [45, 48, 42, 44, 47, 50] },
-  { label: "Corporate", color: "#8b5cf6", values: [55, 58, 60, 62, 58, 55] },
+  { label: "24/7 Access", color: "#e5e5e5", values: [65, 68, 70, 72, 75, 78] },
+  { label: "Premium", color: "#60a5fa", values: [72, 73, 71, 74, 76, 80] },
+  { label: "PT Package", color: "#4ade80", values: [85, 82, 83, 86, 88, 92] },
+  { label: "Student", color: "#fbbf24", values: [45, 48, 42, 44, 47, 50] },
+  { label: "Corporate", color: "#a78bfa", values: [55, 58, 60, 62, 58, 55] },
 ];
 
 const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun"];
@@ -50,11 +50,11 @@ const plansTableData = [
 ];
 
 const planDistribution = [
-  { label: "Base", color: "#3b82f6", percentage: 42 },
-  { label: "Standard", color: "#22c55e", percentage: 28 },
-  { label: "Premium", color: "#f59e0b", percentage: 15 },
-  { label: "Discount", color: "#8b5cf6", percentage: 10 },
-  { label: "B2B", color: "#a3a3a3", percentage: 5 },
+  { label: "Base", color: "#60a5fa", percentage: 42 },
+  { label: "Standard", color: "#4ade80", percentage: 28 },
+  { label: "Premium", color: "#fbbf24", percentage: 15 },
+  { label: "Discount", color: "#a78bfa", percentage: 10 },
+  { label: "B2B", color: "#737373", percentage: 5 },
 ];
 
 const aiPrompts = [
@@ -69,7 +69,7 @@ const aiPrompts = [
 
 const CHART_W = 500;
 const CHART_H = 180;
-const CHART_PAD = 30;
+const CHART_PAD = 0;
 
 function toPoint(value: number, index: number, total: number) {
   const xStep = (CHART_W - CHART_PAD * 2) / (total - 1);
@@ -108,13 +108,13 @@ function smoothPath(values: number[]): string {
 function typeBadgeClass(type: string): string {
   switch (type) {
     case "Premium":
-      return "bg-amber-50 text-amber-700";
+      return "bg-amber-500/15 text-amber-400";
     case "Base":
-      return "bg-blue-50 text-blue-700";
+      return "bg-blue-500/15 text-blue-400";
     case "Standard":
-      return "bg-green-50 text-green-700";
+      return "bg-green-500/15 text-green-400";
     default:
-      return "bg-stone-100 text-stone-600";
+      return "bg-white/5 text-peec-text-tertiary";
   }
 }
 
@@ -128,18 +128,13 @@ export function DashboardPreview() {
   const [isChartHovered, setIsChartHovered] = useState(false);
   const chartRef = useRef<HTMLDivElement>(null);
 
-  // Mouse-driven tooltip: map cursor X to nearest month index
   const handleChartMouseMove = useCallback(
     (e: React.MouseEvent<HTMLDivElement>) => {
       const rect = chartRef.current?.getBoundingClientRect();
       if (!rect) return;
 
-      // Chart content area as a fraction of the container (matching SVG viewBox padding)
-      const padFrac = CHART_PAD / CHART_W;
       const relX = (e.clientX - rect.left) / rect.width;
-      const clamped = Math.max(padFrac, Math.min(1 - padFrac, relX));
-      const normalized = (clamped - padFrac) / (1 - 2 * padFrac);
-      const index = Math.round(normalized * (months.length - 1));
+      const index = Math.round(Math.max(0, Math.min(1, relX)) * (months.length - 1));
       setActiveMonth(index);
     },
     [],
@@ -182,45 +177,29 @@ export function DashboardPreview() {
   }, [typedText, isDeleting, promptIndex]);
 
   // Tooltip x position (percentage)
-  const tooltipXPercent =
-    ((CHART_PAD + activeMonth * ((CHART_W - CHART_PAD * 2) / (months.length - 1))) / CHART_W) * 100;
-
-  // Clamp transform so tooltip doesn't overflow card edges
-  const tooltipTransform =
-    tooltipXPercent < 20
-      ? "translateX(-10%)"
-      : tooltipXPercent > 80
-        ? "translateX(-90%)"
-        : "translateX(-50%)";
+  const tooltipXPercent = (activeMonth / (months.length - 1)) * 100;
 
   return (
     <div className="relative pb-section pt-0">
-      {/* Dot texture background */}
-      <div className="dot-texture pointer-events-none absolute inset-0 opacity-40" />
-
-      {/* Gradient glow behind dashboard */}
-      <div className="dashboard-glow pointer-events-none absolute left-1/2 top-1/3 h-[700px] w-[900px] -translate-x-1/2 -translate-y-1/2" />
-
       <div className="relative mx-auto max-w-6xl px-6">
-        <AnimationWrapper delay={0.2}>
+        <ScrollFadeIn delay={0.2}>
           {/* ===== DASHBOARD CARD ===== */}
-          <div className="dashboard-card relative overflow-hidden rounded-2xl border border-peec-border-light bg-white shadow-card-hover">
+          <div className="glass-panel relative overflow-hidden rounded-2xl border border-white/[0.08]">
             {/* Shine line across top */}
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/80 to-transparent" />
-            <div className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-stone-200/60 to-transparent" />
+            <div className="pointer-events-none absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-white/20 to-transparent" />
             <div className="flex">
               {/* ----- Sidebar ----- */}
-              <div className="hidden w-[200px] shrink-0 border-r border-peec-border-light bg-stone-50 p-4 tablet:block">
+              <div className="hidden w-[200px] shrink-0 border-r border-white/[0.06] p-4 tablet:block" style={{ background: "rgba(255,255,255,0.02)" }}>
                 <div className="mb-4 flex items-center gap-2">
-                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-peec-dark">
-                    <span className="text-xs font-bold text-white">L</span>
+                  <div className="flex h-7 w-7 items-center justify-center rounded-lg bg-white/10">
+                    <span className="text-xs font-bold text-peec-dark">I</span>
                   </div>
                   <span className="text-sm font-semibold text-peec-dark">
-                    LDGR
+                    INVINCIBLE
                   </span>
                 </div>
 
-                <div className="mb-4 flex items-center gap-2 rounded-lg border border-peec-border-light bg-white px-3 py-1.5">
+                <div className="mb-4 flex items-center gap-2 rounded-lg border border-white/[0.06] bg-white/[0.03] px-3 py-1.5">
                   <Search className="h-3 w-3 text-peec-text-tertiary" />
                   <span className="text-xs text-peec-text-muted">Quick Actions</span>
                 </div>
@@ -234,7 +213,7 @@ export function DashboardPreview() {
                       key={item.label}
                       className={`flex items-center gap-2 rounded-lg px-3 py-1.5 text-sm ${
                         item.active
-                          ? "border border-peec-border-light bg-white font-medium text-peec-dark shadow-sm"
+                          ? "border border-white/[0.08] bg-white/[0.05] font-medium text-peec-dark"
                           : "text-peec-text-tertiary"
                       }`}
                     >
@@ -248,24 +227,24 @@ export function DashboardPreview() {
               {/* ----- Main Content ----- */}
               <div className="min-w-0 flex-1">
                 {/* Top filter bar */}
-                <div className="flex flex-wrap items-center gap-2 border-b border-peec-border-light px-4 py-2.5 tablet:px-6">
-                  <span className="flex items-center gap-1.5 rounded-full bg-stone-100 px-3 py-1 text-xs font-medium text-peec-dark">
-                    <span className="flex h-4 w-4 items-center justify-center rounded bg-peec-dark">
-                      <span className="text-2xs font-bold text-white">G</span>
+                <div className="flex flex-wrap items-center gap-2 border-b border-white/[0.06] px-4 py-2.5 tablet:px-6">
+                  <span className="flex items-center gap-1.5 rounded-full bg-white/[0.06] px-3 py-1 text-xs font-medium text-peec-dark">
+                    <span className="flex h-4 w-4 items-center justify-center rounded bg-white/10">
+                      <span className="text-2xs font-bold text-peec-dark">I</span>
                     </span>
-                    Iron Temple
+                    INVINCIBLE
                   </span>
                   {["Last 7 days", "All Locations", "All Plans"].map((filter) => (
                     <span
                       key={filter}
-                      className="flex items-center gap-1 rounded-full border border-peec-border-light px-3 py-1 text-xs text-peec-text-tertiary"
+                      className="flex items-center gap-1 rounded-full border border-white/[0.06] px-3 py-1 text-xs text-peec-text-tertiary"
                     >
                       <span className="h-1 w-1 rounded-full bg-peec-text-muted" />
                       {filter}
                     </span>
                   ))}
                   <div className="ml-auto flex items-center gap-2">
-                    <span className="rounded-full border border-peec-border-light p-1.5">
+                    <span className="rounded-full border border-white/[0.06] p-1.5">
                       <BarChart3 className="h-3 w-3 text-peec-text-tertiary" />
                     </span>
                     <span className="flex items-center gap-1 text-xs text-peec-text-tertiary">
@@ -276,29 +255,29 @@ export function DashboardPreview() {
 
                 <div className="p-4 tablet:p-5">
                   {/* Stats banner */}
-                  <div className="mb-4 rounded-xl border border-peec-border-light bg-stone-50/80 px-4 py-3">
+                  <div className="mb-4 rounded-xl border border-white/[0.06] px-4 py-3 glass-surface">
                     <div className="flex flex-wrap items-center justify-between gap-2">
                       <p className="text-sm text-peec-dark">
                         Overview &middot;{" "}
                         <span className="font-medium">
-                          Iron Temple&apos;s retention trending up by 5.2% this month
+                          INVINCIBLE&apos;s retention trending up by 5.2% this month
                         </span>
                       </p>
                       <div className="flex items-center gap-4 text-xs text-peec-text-tertiary">
                         <span>
                           Members:{" "}
                           <strong className="text-peec-dark">847/1K</strong>{" "}
-                          <TrendingDown className="inline h-3 w-3 text-red-500" />
+                          <TrendingDown className="inline h-3 w-3 text-red-400" />
                         </span>
                         <span>
                           &middot; Retention:{" "}
                           <strong className="text-peec-dark">92%</strong>{" "}
-                          <TrendingUp className="inline h-3 w-3 text-green-500" />
+                          <TrendingUp className="inline h-3 w-3 text-green-400" />
                         </span>
                         <span>
                           &middot; Revenue:{" "}
                           <strong className="text-peec-dark">$42K</strong>{" "}
-                          <TrendingUp className="inline h-3 w-3 text-green-500" />
+                          <TrendingUp className="inline h-3 w-3 text-green-400" />
                         </span>
                       </div>
                     </div>
@@ -309,20 +288,20 @@ export function DashboardPreview() {
                     {/* Left column */}
                     <div className="min-w-0 flex-1">
                       {/* ===== CHART CARD ===== */}
-                      <div className="rounded-xl border border-peec-border-light bg-white p-4">
+                      <div className="rounded-xl border border-white/[0.06] p-4 glass-surface">
                         {/* Tabs */}
                         <div className="mb-3 flex items-center gap-4">
-                          <div className="flex items-center gap-1 rounded-full bg-stone-100 px-3 py-1">
-                            <span className="h-1 w-1 rounded-full bg-peec-dark" />
+                          <div className="flex items-center gap-1 rounded-full bg-white/[0.08] px-3 py-1">
+                            <span className="h-1 w-1 rounded-full bg-emerald-400" />
                             <span className="text-xs font-medium text-peec-dark">Retention</span>
                           </div>
                           <span className="text-xs text-peec-text-muted">Revenue</span>
                           <span className="text-xs text-peec-text-muted">Check-ins</span>
                           <div className="ml-auto flex gap-1.5">
-                            <span className="rounded border border-peec-border-light p-1">
+                            <span className="rounded border border-white/[0.06] p-1">
                               <BarChart3 className="h-3 w-3 text-peec-text-tertiary" />
                             </span>
-                            <span className="rounded border border-peec-border-light p-1">
+                            <span className="rounded border border-white/[0.06] p-1">
                               <TrendingUp className="h-3 w-3 text-peec-text-tertiary" />
                             </span>
                           </div>
@@ -353,7 +332,7 @@ export function DashboardPreview() {
                                   y1={y}
                                   x2={CHART_W - CHART_PAD}
                                   y2={y}
-                                  stroke="#e5e5e5"
+                                  stroke="rgba(255,255,255,0.06)"
                                   strokeWidth="0.5"
                                   strokeDasharray="4 4"
                                 />
@@ -366,7 +345,7 @@ export function DashboardPreview() {
                               y1={CHART_PAD}
                               x2={0}
                               y2={CHART_H - CHART_PAD}
-                              stroke="#d4d4d4"
+                              stroke="rgba(255,255,255,0.15)"
                               strokeWidth="1"
                               strokeDasharray="3 3"
                               animate={{
@@ -402,7 +381,7 @@ export function DashboardPreview() {
                                   key={line.label}
                                   r="4"
                                   fill={line.color}
-                                  stroke="white"
+                                  stroke="rgba(10,10,10,0.9)"
                                   strokeWidth="2"
                                   animate={{ cx: pt.x, cy: pt.y }}
                                   transition={{
@@ -416,9 +395,15 @@ export function DashboardPreview() {
 
                           {/* Floating tooltip */}
                           <motion.div
-                            className="pointer-events-none absolute top-0 z-10 rounded-xl border border-peec-border-light bg-white px-4 py-3 shadow-card-hover"
+                            className="pointer-events-none absolute top-0 z-10 w-[180px] rounded-xl border border-white/[0.08] px-4 py-3"
+                            style={{
+                              background: "rgba(10,10,10,0.92)",
+                              backdropFilter: "blur(16px)",
+                              WebkitBackdropFilter: "blur(16px)",
+                              boxShadow: "0 8px 32px -8px rgba(0,0,0,0.6), inset 0 1px 0 0 rgba(255,255,255,0.06)",
+                              transform: "translateX(-50%)",
+                            }}
                             animate={{ left: `${tooltipXPercent}%` }}
-                            style={{ transform: tooltipTransform }}
                             transition={{ duration: isChartHovered ? 0.15 : 0.6, ease: "easeInOut" }}
                           >
                             <p className="mb-2 text-xs font-semibold text-peec-dark">
@@ -444,7 +429,7 @@ export function DashboardPreview() {
                           </motion.div>
 
                           {/* X axis labels */}
-                          <div className="mt-1 flex justify-between px-6 text-xs text-peec-text-muted">
+                          <div className="mt-1 flex justify-between text-xs text-peec-text-muted">
                             {months.map((m, i) => (
                               <span
                                 key={m}
@@ -462,12 +447,12 @@ export function DashboardPreview() {
                       </div>
 
                       {/* ===== PLANS TABLE ===== */}
-                      <div className="mt-4 rounded-xl border border-peec-border-light bg-white p-4">
+                      <div className="mt-4 rounded-xl border border-white/[0.06] p-4 glass-surface">
                         <div className="mb-3 flex items-center gap-0">
-                          <span className="rounded-l-lg border border-peec-border-light bg-stone-100 px-3 py-1 text-xs font-medium text-peec-dark">
+                          <span className="rounded-l-lg border border-white/[0.08] bg-white/[0.06] px-3 py-1 text-xs font-medium text-peec-dark">
                             Plans
                           </span>
-                          <span className="rounded-r-lg border border-l-0 border-peec-border-light px-3 py-1 text-xs text-peec-text-muted">
+                          <span className="rounded-r-lg border border-l-0 border-white/[0.06] px-3 py-1 text-xs text-peec-text-muted">
                             Locations
                           </span>
                         </div>
@@ -485,7 +470,7 @@ export function DashboardPreview() {
                             {plansTableData.map((plan) => (
                               <tr
                                 key={plan.name}
-                                className="border-t border-peec-border-light/50"
+                                className="border-t border-white/[0.04]"
                               >
                                 <td className="py-2 text-xs text-peec-text-muted">
                                   {plan.rank}
@@ -496,7 +481,7 @@ export function DashboardPreview() {
                                       className="h-3 w-3 rounded"
                                       style={{
                                         backgroundColor:
-                                          chartLines[plan.rank - 1]?.color ?? "#a3a3a3",
+                                          chartLines[plan.rank - 1]?.color ?? "#737373",
                                       }}
                                     />
                                     {plan.name}
@@ -525,7 +510,7 @@ export function DashboardPreview() {
                     {/* Right column */}
                     <div className="hidden w-[280px] shrink-0 space-y-4 tablet:block">
                       {/* ===== LOCATION PERFORMANCE TABLE ===== */}
-                      <div className="rounded-xl border border-peec-border-light bg-white p-4">
+                      <div className="rounded-xl border border-white/[0.06] p-4 glass-surface">
                         <div className="mb-1 flex items-center justify-between">
                           <p className="text-sm font-semibold text-peec-dark">
                             Location Performance
@@ -549,7 +534,7 @@ export function DashboardPreview() {
                             {locationsData.map((loc) => (
                               <tr
                                 key={loc.name}
-                                className="border-t border-peec-border-light/50"
+                                className="border-t border-white/[0.04]"
                               >
                                 <td className="py-1.5 text-2xs text-peec-text-muted">
                                   {loc.rank}
@@ -565,7 +550,7 @@ export function DashboardPreview() {
                                   </span>
                                   {loc.delta !== undefined && (
                                     <span
-                                      className={`ml-1 text-2xs ${loc.delta > 0 ? "text-green-500" : "text-red-500"}`}
+                                      className={`ml-1 text-2xs ${loc.delta > 0 ? "text-green-400" : "text-red-400"}`}
                                     >
                                       {loc.delta > 0 ? "\u2191" : "\u2193"}{" "}
                                       {Math.abs(loc.delta)}
@@ -582,7 +567,7 @@ export function DashboardPreview() {
                       </div>
 
                       {/* ===== PLAN DISTRIBUTION DONUT ===== */}
-                      <div className="rounded-xl border border-peec-border-light bg-white p-4">
+                      <div className="rounded-xl border border-white/[0.06] p-4 glass-surface">
                         <div className="mb-1 flex items-center justify-between">
                           <p className="text-sm font-semibold text-peec-dark">
                             Plans by Type
@@ -654,32 +639,35 @@ export function DashboardPreview() {
 
           {/* ===== AI PROMPT OVERLAY ===== */}
           <div className="relative -mt-6 mx-auto max-w-xl">
-            <div className="rounded-2xl border border-peec-border-light bg-white px-5 py-4 shadow-card-hover">
-              <div className="mb-2 min-h-[24px]">
+            <div
+              className="glass-card rounded-2xl border border-white/[0.08] px-5 py-4"
+              data-accent="emerald"
+            >
+              <div className="relative z-10 mb-2 min-h-[24px]">
                 <span className="text-sm text-peec-text-muted">
                   {typedText}
                 </span>
                 <span className="animate-blink ml-0.5 inline-block h-4 w-[2px] bg-peec-dark align-middle" />
               </div>
-              <div className="flex items-center justify-between">
+              <div className="relative z-10 flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                  <span className="rounded-full border border-peec-border-light px-2.5 py-0.5 text-2xs text-peec-text-muted">
+                  <span className="rounded-full border border-white/[0.06] px-2.5 py-0.5 text-2xs text-peec-text-muted">
                     AI Agent
                   </span>
-                  <span className="rounded-full border border-peec-border-light px-2.5 py-0.5 text-2xs text-peec-text-muted">
+                  <span className="rounded-full border border-white/[0.06] px-2.5 py-0.5 text-2xs text-peec-text-muted">
                     No tags
                   </span>
                 </div>
                 <button
                   type="button"
-                  className="flex h-8 w-8 items-center justify-center rounded-full bg-peec-dark text-white"
+                  className="flex h-8 w-8 items-center justify-center rounded-full bg-white/10 text-peec-dark"
                 >
                   <ArrowUp className="h-4 w-4" />
                 </button>
               </div>
             </div>
           </div>
-        </AnimationWrapper>
+        </ScrollFadeIn>
       </div>
     </div>
   );

@@ -5,7 +5,7 @@ import { forwardRef } from "react";
 import { cn } from "./utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
+  "inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-all focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50",
   {
     variants: {
       variant: {
@@ -17,16 +17,16 @@ const buttonVariants = cva(
         secondary: "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
-        cta: "bg-[#171717] text-white shadow hover:bg-[#2b2b2b] rounded-xl",
-        outlinePill:
-          "border border-[#e5e5e5] bg-white text-[#171717] rounded-xl hover:bg-[#f5f5f5] shadow-sm",
+        primary: "glass-btn border border-white/20 text-white rounded-lg animate-pulse-glow hover:border-white/30",
+        "secondary-outline":
+          "glass-btn border border-white/10 text-white rounded-lg hover:border-white/20",
       },
       size: {
         default: "h-9 px-4 py-2",
         sm: "h-8 rounded-md px-3 text-xs",
         lg: "h-10 rounded-md px-8",
         icon: "h-9 w-9",
-        pill: "h-11 px-6 py-2.5 text-sm",
+        pill: "h-11 px-6 py-2.5 text-sm rounded-lg",
       },
     },
     defaultVariants: {

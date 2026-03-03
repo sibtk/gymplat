@@ -1,79 +1,90 @@
 "use client";
 
 import { Button } from "@gym/ui";
-import { Brain, Shield, Sparkles, TrendingUp } from "lucide-react";
+import { motion } from "framer-motion";
 
-import { BlurFadeIn, FadeIn } from "./animation-wrapper";
-import { SectionContainer } from "./section-container";
+import { FadeIn } from "./animation-wrapper";
+import { ShimmerBadge } from "./shimmer-badge";
 
 export function Hero() {
   return (
-    <SectionContainer className="relative overflow-hidden pb-12 pt-16 tablet:pb-20 tablet:pt-24">
-      {/* Dot grid pattern background */}
-      <div className="dot-texture pointer-events-none absolute inset-0 opacity-30" />
+    <section className="relative overflow-hidden px-6 pb-16 pt-20 tablet:pb-20 tablet:pt-28">
+      {/* Mesh gradient — colored radial glows */}
+      <div className="pointer-events-none absolute inset-0">
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse 60% 50% at 50% 0%, rgba(16,185,129,0.06) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse 40% 40% at 30% 10%, rgba(59,130,246,0.05) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse 40% 40% at 70% 10%, rgba(139,92,246,0.04) 0%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute inset-0"
+          style={{
+            background: "radial-gradient(ellipse 80% 60% at 50% 30%, rgba(16,185,129,0.02) 0%, transparent 70%)",
+          }}
+        />
 
-      {/* Radial gradient glow behind hero text */}
-      <div className="pointer-events-none absolute left-1/2 top-1/3 h-[600px] w-[800px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(ellipse_at_center,rgba(168,162,158,0.2)_0%,rgba(168,162,158,0.05)_50%,transparent_70%)]" />
+        {/* Floating gradient orbs */}
+        <motion.div
+          className="absolute -left-40 top-1/4 h-[600px] w-[600px] rounded-full opacity-25"
+          style={{
+            background: "radial-gradient(circle, rgba(16,185,129,0.10) 0%, transparent 70%)",
+          }}
+          animate={{ x: [0, 80, -30, 0], y: [0, -50, 40, 0] }}
+          transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+        />
+        <motion.div
+          className="absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full opacity-20"
+          style={{
+            background: "radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%)",
+          }}
+          animate={{ x: [0, -60, 40, 0], y: [0, 60, -30, 0] }}
+          transition={{ duration: 40, repeat: Infinity, ease: "linear" }}
+        />
+      </div>
 
       <div className="relative mx-auto max-w-3xl text-center">
         <FadeIn>
-          <div className="mb-6 inline-flex items-center gap-2 rounded-full border border-peec-border-light bg-white px-4 py-1.5 shadow-[0_0_12px_rgba(23,23,23,0.06),0_4px_4px_rgba(23,23,23,0.04)]">
-            <Sparkles className="h-4 w-4 text-peec-dark" />
-            <span className="text-sm text-peec-text-secondary">
-              AI-powered retention engine built in
-            </span>
+          <div className="mb-4 flex justify-center">
+            <ShimmerBadge>Now in Early Access</ShimmerBadge>
           </div>
+          <p className="mb-6 font-mono text-xs font-medium uppercase tracking-[0.2em] text-peec-text-muted">
+            The system for gym management
+          </p>
         </FadeIn>
 
-        <BlurFadeIn delay={0.1}>
-          <h1 className="mb-6 text-4xl font-bold tracking-tight text-peec-dark tablet:text-6xl desktop:text-7xl">
-            Stop losing members.{" "}
+        <FadeIn delay={0.08}>
+          <h1 className="mb-6 text-5xl font-medium tracking-tight text-peec-dark tablet:text-7xl desktop:text-8xl">
+            Stop losing members.
+            <br />
             <span className="text-peec-text-tertiary">Start predicting churn.</span>
           </h1>
-        </BlurFadeIn>
-
-        <BlurFadeIn delay={0.2}>
-          <p className="mx-auto mb-10 max-w-2xl text-lg text-peec-text-secondary">
-            LDGR is the AI-powered gym management platform that predicts member churn
-            weeks before cancellation — and gives you the{" "}
-            <span className="font-medium text-peec-dark">tools to prevent it</span>.
-          </p>
-        </BlurFadeIn>
-
-        <FadeIn delay={0.3}>
-          <div className="flex flex-col items-center justify-center gap-3 tablet:flex-row">
-            <Button variant="cta" size="pill">
-              Start Free Trial
-            </Button>
-            <Button variant="outlinePill" size="pill">
-              Watch Demo
-            </Button>
-          </div>
         </FadeIn>
 
-        <FadeIn delay={0.4}>
-          <p className="mt-5 text-sm text-peec-text-muted">
-            No credit card required &middot; 14-day free trial &middot; Cancel anytime
+        <FadeIn delay={0.16}>
+          <p className="mx-auto mb-8 max-w-xl text-lg text-peec-text-secondary">
+            AI-powered gym management that predicts churn before cancellation.
           </p>
         </FadeIn>
 
-        <FadeIn delay={0.45}>
-          <div className="mx-auto mt-8 flex max-w-lg flex-wrap items-center justify-center gap-6 text-sm text-peec-text-tertiary">
-            <span className="flex items-center gap-1.5">
-              <Brain className="h-4 w-4" />
-              Churn prediction
-            </span>
-            <span className="flex items-center gap-1.5">
-              <TrendingUp className="h-4 w-4" />
-              Revenue analytics
-            </span>
-            <span className="flex items-center gap-1.5">
-              <Shield className="h-4 w-4" />
-              PCI compliant
-            </span>
-          </div>
+        <FadeIn delay={0.24}>
+          <Button variant="primary" size="pill">
+            Get started free
+          </Button>
         </FadeIn>
       </div>
-    </SectionContainer>
+    </section>
   );
 }

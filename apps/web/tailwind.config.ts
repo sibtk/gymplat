@@ -43,14 +43,13 @@ const config: Config = {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
-        // Design tokens
-        "peec-red": "#d80027",
-        "peec-dark": "#171717",
-        "peec-light": "#f7f7f7",
-        "peec-border-light": "#e5e5e5",
-        "peec-text-secondary": "#525252",
-        "peec-text-tertiary": "#737373",
-        "peec-text-muted": "#a3a3a3",
+        // Design tokens — dark mode
+        "peec-dark": "#e5e5e5",
+        "peec-light": "#0a0a0a",
+        "peec-border-light": "rgba(255,255,255,0.08)",
+        "peec-text-secondary": "#b3b3b3",
+        "peec-text-tertiary": "#808080",
+        "peec-text-muted": "#595959",
         stone: {
           50: "#fafaf9",
           100: "#f5f5f5",
@@ -81,12 +80,13 @@ const config: Config = {
         "5xl": ["42px", { lineHeight: "1.1", letterSpacing: "-0.028em" }],
         "6xl": ["52px", { lineHeight: "1.08", letterSpacing: "-0.032em" }],
         "7xl": ["64px", { lineHeight: "1.05", letterSpacing: "-0.035em" }],
+        "8xl": ["76px", { lineHeight: "1.02", letterSpacing: "-0.04em" }],
       },
       spacing: {
-        section: "80px",
+        section: "96px",
       },
       maxWidth: {
-        peec: "1148px",
+        peec: "1200px",
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -94,8 +94,7 @@ const config: Config = {
         sm: "calc(var(--radius) - 4px)",
       },
       boxShadow: {
-        card: "0 4px 4px rgba(23,23,23,0.04)",
-        "card-hover": "0 8px 16px rgba(23,23,23,0.08)",
+        elevated: "0 1px 2px rgba(255,255,255,0.02), 0 4px 16px rgba(255,255,255,0.03)",
       },
       screens: {
         tablet: "810px",
