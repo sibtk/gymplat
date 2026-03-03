@@ -71,7 +71,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
 
   const handleLogout = () => {
     logout();
-    router.push("/login" as string);
+    router.push("/login");
   };
 
   const linkClass = (href: string) =>
@@ -94,7 +94,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
             return (
               <Link
                 key={item.href}
-                href={item.href as string}
+                href={item.href}
                 onClick={onClose}
                 className={linkClass(item.href)}
               >
