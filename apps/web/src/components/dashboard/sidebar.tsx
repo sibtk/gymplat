@@ -41,7 +41,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
 
   const handleLogout = () => {
     logout();
-    router.push("/login" as string);
+    router.push("/login");
   };
 
   return (
@@ -77,7 +77,7 @@ export function Sidebar({ mobile, onClose }: SidebarProps) {
             return (
               <Link
                 key={item.href}
-                href={item.href as string}
+                href={item.href}
                 onClick={onClose}
                 className={`flex items-center gap-2.5 rounded-lg px-3 py-2 text-sm transition-colors ${
                   active
